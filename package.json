@@ -1,0 +1,36 @@
+{
+  "name": "blueprint-builder-template",
+  "version": "1.0.0",
+  "description": "boilerplate to build blueprints for flowbuild using an IDE",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/flow-build/blueprint-builder-template.git"
+  },
+  "keywords": [
+    "flowbuild",
+    "blueprints"
+  ],
+  "author": "Gustavo C. Haramura",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/flow-build/blueprint-builder-template/issues"
+  },
+  "homepage": "https://github.com/flow-build/blueprint-builder-template#readme",
+  "dependencies": {
+    "@cucumber/cucumber": "^7.3.2",
+    "ajv-schema-generator": "^0.0.1",
+    "axios": "^0.26.1",
+    "dotenv": "^16.0.0",
+    "lodash": "^4.17.21",
+    "winston": "^3.6.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.10.0",
+    "jest": "^27.5.1",
+    "plop": "^3.0.5"
+  }
+}
