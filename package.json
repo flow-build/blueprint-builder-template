@@ -4,7 +4,8 @@
   "description": "boilerplate to build blueprints for flowbuild using an IDE",
   "main": "index.js",
   "scripts": {
-    "test": "test"
+    "test": "test",
+    "plop": "plop"
   },
   "repository": {
     "type": "git",

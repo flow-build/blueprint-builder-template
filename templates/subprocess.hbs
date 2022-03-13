@@ -1,0 +1,13 @@
+module.exports = {
+  id: "{{id}}",
+  name: "{{name}}",
+  next: "{{next}}",
+  type: "SubProcess",
+  lane_id: "{{lane}}",
+  parameters: {
+    workflow_name: "{{workflow}}",
+    actor_data: { $ref: "actor_data" },
+    valid_response: "finished",
+    input: {}
+  }
+}

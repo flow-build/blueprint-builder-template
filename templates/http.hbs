@@ -1,0 +1,21 @@
+module.exports = {
+  id: "{{id}}",
+  name: "{{name}}",
+  next: "{{next}}",
+  type: "SystemTask",
+  category: "HTTP",
+  lane_id: "{{lane}}",
+  parameters: {
+    input: {},
+    request: {
+      verb: "{{verb}}",
+      url: "{{{url}}}",
+      headers: {
+        "ContentType": "application/json"
+      },
+    },
+    valid_response_codes: [{{responseCodes}}],
+    timeout: {{timeout}},
+    max_content_length: {{maxLength}}
+  }
+}

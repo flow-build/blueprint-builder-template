@@ -1,0 +1,13 @@
+module.exports = {
+  id: "{{id}}",
+  name: "{{name}}",
+  next: "{{next}}",
+  type: "SystemTask",
+  category: "startProcess",
+  lane_id: "{{lane}}",
+  parameters: {
+    workflow_name: "{{workflow}}",
+    actor_data: { $ref: "actor_data" },
+    input: {}
+  }
+}

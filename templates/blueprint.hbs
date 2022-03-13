@@ -1,0 +1,25 @@
+const { getLanes } = require("../lanes/lanes");
+const { getNodes } = require("../nodes/index");
+
+const name = "{{name}}";
+const description = "{{description}}";
+
+const nodes = [
+  {
+    nodeSpec: "",
+    id: "",
+    next: "",
+  }
+];
+
+module.exports = {
+  name: name,
+  description: description,
+  blueprint_spec: {
+    requirements: ["core"],
+    prepare: [],
+    nodes: getNodes(nodes),
+    lanes: getLanes(getNodes(nodes)),
+    environment: {},
+  },
+};
