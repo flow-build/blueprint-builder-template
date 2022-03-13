@@ -4,8 +4,9 @@
   "description": "boilerplate to build blueprints for flowbuild using an IDE",
   "main": "index.js",
   "scripts": {
-    "test": "test",
-    "plop": "plop"
+    "plop": "plop",
+    "export": "node ./scripts/export.js",
+    "test": "node ./node_modules/.bin/cucumber-js"
   },
   "repository": {
     "type": "git",
@@ -26,6 +27,7 @@
     "ajv-schema-generator": "^0.0.1",
     "axios": "^0.26.1",
     "dotenv": "^16.0.0",
+    "jsum": "^2.0.0-alpha.4",
     "lodash": "^4.17.21",
     "winston": "^3.6.0"
   },
