@@ -39,6 +39,22 @@ Given(
   }
 );
 
+Then("the process passes through {string}", { timeout: 60 * 1000 }, async function (node) {
+  await this.getProcessHistory();
+  const nodeState = this.history.find(state => state.node_id === node);
+  assert.equal(nodeState.node_id, node);
+  assert.equal(nodeState.status, "running");
+  return;
+});
+
+Then("o processo passa pelo nó {string}", { timeout: 60 * 1000 }, async function (node) {
+  await this.getProcessHistory();
+  const nodeState = this.history.find(state => state.node_id === node);
+  assert.equal(nodeState.node_id, node);
+  assert.equal(nodeState.status, "running");
+  return;
+});
+
 When("the user submits {string}", { timeout: 60 * 1000 }, async function (payload) {
   await this.submitActivity(payload);
   return;
