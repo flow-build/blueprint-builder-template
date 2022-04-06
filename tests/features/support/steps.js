@@ -11,6 +11,16 @@ Given("que o usuario padrao esta logado", { timeout: 60 * 1000 }, async function
   return;
 });
 
+Given("an anonymous user is logged in", { timeout: 60 * 1000 }, async function () {
+  await this.getAnonymousToken();
+  return;
+});
+
+Given("que um usuario anonimo esta logado", { timeout: 60 * 1000 }, async function () {
+  await this.getAnonymousToken();
+  return;
+});
+
 Given(
   "a {string} process started with the initial data of {string}",
   { timeout: 60 * 1000 },
@@ -28,6 +38,22 @@ Given(
     return;
   }
 );
+
+Then("the process passes through {string}", { timeout: 60 * 1000 }, async function (node) {
+  await this.getProcessHistory();
+  const nodeState = this.history.find(state => state.node_id === node);
+  assert.equal(nodeState.node_id, node);
+  assert.equal(nodeState.status, "running");
+  return;
+});
+
+Then("o processo passa pelo nó {string}", { timeout: 60 * 1000 }, async function (node) {
+  await this.getProcessHistory();
+  const nodeState = this.history.find(state => state.node_id === node);
+  assert.equal(nodeState.node_id, node);
+  assert.equal(nodeState.status, "running");
+  return;
+});
 
 When("the user submits {string}", { timeout: 60 * 1000 }, async function (payload) {
   await this.submitActivity(payload);
