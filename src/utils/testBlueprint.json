@@ -1,0 +1,73 @@
+{
+  "name": "testBlueprint",
+  "description": "Workflow para rodar testes sobre a aplicação",
+  "blueprint_spec": {
+    "lanes": [
+      {
+        "id": "OnlyLane",
+        "name": "The Only Lane",
+        "rule": [ "fn", [ "&", "args" ], true ]
+      }
+    ],
+    "nodes": [
+      {
+        "id": "START",
+        "name": "Start test",
+        "next": "CONFIG",
+        "type": "Start",
+        "lane_id": "OnlyLane",
+        "parameters": {
+          "input_schema": {
+            "type": "object",
+            "additionalProperties": false
+          }
+        }
+      },
+      {
+        "id": "CONFIG",
+        "name": "Bag process parameters",
+        "next": "NOTIFY",
+        "type": "SystemTask",
+        "category": "SetToBag",
+        "lane_id": "OnlyLane",
+        "parameters": {
+          "input": {
+            "actor_id": {
+              "$ref": "actor_data.actor_id"
+            }
+          }
+        }
+      },
+      {
+        "id": "NOTIFY",
+        "name": "Notify user",
+        "next": "FINISH",
+        "type": "UserTask",
+        "lane_id": "OnlyLane",
+        "parameters": {
+          "activity_schema": {
+            "type": "object",
+            "additionalProperties": false
+          },
+          "input": {
+            "message": "Hello user!"
+          },
+          "action": "NOTIFY",
+          "timeout": 10
+        }
+      },
+      {
+        "id": "FINISH",
+        "name": "Finish test",
+        "next": null,
+        "type": "Finish",
+        "lane_id": "OnlyLane"
+      }
+    ],
+    "prepare": [],
+    "environment": {},
+    "requirements": [
+      "core"
+    ]
+  }
+}
