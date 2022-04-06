@@ -18,7 +18,16 @@ const nodes = [
   {
     nodeSpec: "notifyTest",
     id: "NOTIFY-TEST",
-    next: "END-TEST",
+    next: "COUNT-TEST",
+  },
+  {
+    nodeSpec: "countTest",
+    id: "COUNT-TEST",
+    next: "CHECK-COUNT-TEST",
+  },
+  {
+    nodeSpec: "checkCountTest",
+    id: "CHECK-COUNT-TEST",
   },
   {
     nodeSpec: "endTest"
