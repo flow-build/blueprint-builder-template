@@ -1,6 +1,6 @@
 const lanes = [
   {
-    id: "anyone",
+    id: "free",
     name: "always true",
     rule: { $js: "() => true" },
   },
@@ -23,9 +23,9 @@ const lanes = [
     ],
   },
   {
-    id: "eventId",
-    name: "restricted to eventId",
-    rule: { $js: "({ actor_data, bag }) => (actor_data.event_id === bag.actor.event_id ? true : false)" },
+    id: "sessionId",
+    name: "restricted to sessionId",
+    rule: { $js: "({ actor_data, bag }) => (actor_data.session_id === bag.actor.sessionId ? true : false)" },
   }
 ];
 
