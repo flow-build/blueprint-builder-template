@@ -11,6 +11,16 @@ Given("que o usuario padrao esta logado", { timeout: 60 * 1000 }, async function
   return;
 });
 
+Given("an anonymous user is logged in", { timeout: 60 * 1000 }, async function () {
+  await this.getAnonymousToken();
+  return;
+});
+
+Given("que um usuario anonimo esta logado", { timeout: 60 * 1000 }, async function () {
+  await this.getAnonymousToken();
+  return;
+});
+
 Given(
   "a {string} process started with the initial data of {string}",
   { timeout: 60 * 1000 },
