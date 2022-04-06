@@ -40,7 +40,7 @@
       {
         "id": "NOTIFY-TEST",
         "name": "NOTIFY",
-        "next": "END-TEST",
+        "next": "COUNT-TEST",
         "type": "UserTask",
         "lane_id": "actorId",
         "parameters": {
@@ -58,6 +58,40 @@
           "schema": ""
         },
         "nodeSpec": "notifyTest"
+      },
+      {
+        "id": "COUNT-TEST",
+        "name": "Increase count",
+        "next": "CHECK-COUNT-TEST",
+        "type": "SystemTask",
+        "lane_id": "actorId",
+        "category": "setToBag",
+        "nodeSpec": "countTest",
+        "parameters": {
+            "input": {
+                "count": {
+                    "$js": "({bag}) => (bag?.count ? bag.count + 1 : 1)"
+                }
+            }
+        }
+      },
+      {
+        "id": "CHECK-COUNT-TEST",
+        "name": "Check if count is 3",
+        "next": {
+            "3": "END-TEST",
+            "default": "COUNT-TEST"
+        },
+        "type": "Flow",
+        "lane_id": "actorId",
+        "nodeSpec": "checkCountTest",
+        "parameters": {
+            "input": {
+                "key": {
+                    "$ref": "bag.count"
+                }
+            }
+        }
       },
       {
         "id": "END-TEST",
