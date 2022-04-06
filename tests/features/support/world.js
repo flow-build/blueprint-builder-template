@@ -1,6 +1,6 @@
 require("dotenv").config();
 const axios = require("axios");
-const { logger } = require("../../src/utils/logger");
+const { logger } = require("../../../src/utils/logger");
 const { setWorldConstructor } = require("@cucumber/cucumber");
 const FLOWBUILD_URL = process.env.FLOWBUILD_URL;
 const actualTimeout = setTimeout;
@@ -34,8 +34,8 @@ class CustomWorld {
   async getAnonymousToken() {
     logger.info("getAnonymousToken");
     const response = await axios({
-      method: "get",
-      url: "/anonymousToken",
+      method: "post",
+      url: "/token",
       baseURL: FLOWBUILD_URL,
     });
     logger.debug("getAnonymousToken received");
