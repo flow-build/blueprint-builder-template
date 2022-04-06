@@ -1,0 +1,92 @@
+{
+  "name": "testBlueprint",
+  "description": "execute tests",
+  "blueprint_spec": {
+    "requirements": [
+      "core"
+    ],
+    "prepare": [],
+    "nodes": [
+      {
+        "id": "START-TEST",
+        "name": "START",
+        "type": "Start",
+        "next": "CONFIG-TEST",
+        "lane_id": "free",
+        "parameters": {
+          "input_schema": {
+            "type": "object",
+            "additionalProperties": false
+          }
+        },
+        "nodeSpec": "startTest"
+      },
+      {
+        "id": "CONFIG-TEST",
+        "name": "CONFIG",
+        "next": "NOTIFY-TEST",
+        "type": "SystemTask",
+        "category": "setToBag",
+        "lane_id": "free",
+        "parameters": {
+          "input": {
+            "actor_id": {
+              "$ref": "actor_data.actor_id"
+            }
+          }
+        },
+        "nodeSpec": "configTest"
+      },
+      {
+        "id": "NOTIFY-TEST",
+        "name": "NOTIFY",
+        "next": "END-TEST",
+        "type": "UserTask",
+        "lane_id": "actorId",
+        "parameters": {
+          "input": {},
+          "action": "NOTIFY_USER",
+          "activity_manager": "commit",
+          "timeout": 30,
+          "activity_schema": {
+            "type": "object",
+            "additionalProperties": false
+          }
+        },
+        "example": {
+          "file": "",
+          "schema": ""
+        },
+        "nodeSpec": "notifyTest"
+      },
+      {
+        "id": "END-TEST",
+        "name": "end",
+        "type": "Finish",
+        "next": null,
+        "lane_id": "actorId",
+        "parameters": {
+          "input": {}
+        },
+        "nodeSpec": "endTest"
+      }
+    ],
+    "lanes": [
+      {
+        "id": "free",
+        "name": "always true",
+        "rule": {
+          "$js": "() => true"
+        }
+      },
+      {
+        "id": "actorId",
+        "name": "restricted",
+        "rule": {
+          "$js": "({ actor_data, bag }) => (actor_data.actor_id === bag.actor_id)"
+        }
+      }
+    ],
+    "environment": {}
+  }
+}
