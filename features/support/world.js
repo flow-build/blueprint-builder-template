@@ -118,6 +118,7 @@ class CustomWorld {
   }
 
   async getProcessHistory() {
+    await wait(500);
     logger.info(`getProcessHistory ${this.pid}`);
     const response = await axios({
       method: "get",
