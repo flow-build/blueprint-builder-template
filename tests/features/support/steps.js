@@ -1,5 +1,12 @@
 const { Given, When, Then } = require("@cucumber/cucumber");
 const assert = require("assert").strict;
+const actualTimeout = setTimeout;
+
+function wait(ms = 5000) {
+  return new Promise((resolve) => {
+    actualTimeout(resolve, ms);
+  });
+}
 
 Given("the default user is logged in", { timeout: 60 * 1000 }, async function () {
   await this.getToken();
@@ -40,6 +47,7 @@ Given(
 );
 
 Then("the process passes through {string}", { timeout: 60 * 1000 }, async function (node) {
+  await wait(500);
   await this.getProcessHistory();
   const nodeState = this.history.find(state => state.node_id === node);
   assert.equal(nodeState.node_id, node);
@@ -48,6 +56,7 @@ Then("the process passes through {string}", { timeout: 60 * 1000 }, async functi
 });
 
 Then("o processo passa pelo nó {string}", { timeout: 60 * 1000 }, async function (node) {
+  await wait(500);
   await this.getProcessHistory();
   const nodeState = this.history.find(state => state.node_id === node);
   assert.equal(nodeState.node_id, node);
