@@ -65,26 +65,16 @@ class CustomWorld {
       const nodeState = this.history.find(state => state.status === "waiting");
       const middlePayload = JSON.parse(mustache.render(payload, nodeState.bag));
       const payloadPairs = Object.entries(middlePayload).map(subArr => subArr.map(value => value.toString()));
-      const resultPayload = Object.fromEntries(payloadPairs);
-      const response = await axios({
-        method: "post",
-        url: `/activity_manager/${this.amid}/submit`,
-        baseURL: FLOWBUILD_URL,
-        headers: { Authorization: `Bearer ${this.token}` },
-        data: resultPayload,
-      });
-      logger.debug("submitActivity response");
-      if (response.status === 200) {
-        return true;
-      }
-      return false;
+      this.resultPayload = Object.fromEntries(payloadPairs);
+    } else {
+      this.resultPayload = JSON.parse(payload);
     }
     const response = await axios({
       method: "post",
       url: `/activity_manager/${this.amid}/submit`,
       baseURL: FLOWBUILD_URL,
       headers: { Authorization: `Bearer ${this.token}` },
-      data: JSON.parse(payload),
+      data: this.resultPayload,
     });
     logger.debug("submitActivity response");
     if (response.status === 200) {
