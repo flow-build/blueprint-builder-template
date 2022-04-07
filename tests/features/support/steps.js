@@ -80,7 +80,7 @@ Then("o processo passou {int} vezes pelo nó {string}", { timeout: 60 * 1000 }, 
   return;
 });
 
-Then("the process passed at least {int} times through {string}", { timeout: 60 * 1000 }, async function (node) {
+Then("the process passed at least {int} times through {string}", { timeout: 60 * 1000 }, async function (passTimes, node) {
   await this.waitProcessStop();
   await this.getProcessHistory();
   const nodeState = this.history.filter(state => state.node_id === node && state.status === "running");
