@@ -55,6 +55,38 @@ Then("o processo passa pelo nó {string}", { timeout: 60 * 1000 }, async functio
   return;
 });
 
+Then("the process passed {int} times through {string}", { timeout: 60 * 1000 }, async function (node) {
+  await this.waitProcessStop();
+  await this.getProcessHistory();
+  const nodeState = this.history.filter(state => state.node_id === node && state.status === "running");
+  assert.equal(nodeState.length, passTimes);
+  return;
+});
+
+Then("o processo passou {int} vezes pelo nó {string}", { timeout: 60 * 1000 }, async function (passTimes, node) {
+  await this.waitProcessStop();
+  await this.getProcessHistory();
+  const nodeState = this.history.filter(state => state.node_id === node && state.status === "running");
+  assert.equal(nodeState.length, passTimes);
+  return;
+});
+
+Then("the process passed at least {int} times through {string}", { timeout: 60 * 1000 }, async function (node) {
+  await this.waitProcessStop();
+  await this.getProcessHistory();
+  const nodeState = this.history.filter(state => state.node_id === node && state.status === "running");
+  assert.equal(nodeState.length >= passTimes, true);
+  return;
+});
+
+Then("o processo passou pelo menos {int} vezes pelo nó {string}", { timeout: 60 * 1000 }, async function (passTimes, node) {
+  await this.waitProcessStop();
+  await this.getProcessHistory();
+  const nodeState = this.history.filter(state => state.node_id === node && state.status === "running");
+  assert.equal(nodeState.length >= passTimes, true);
+  return;
+});
+
 When("the user submits {string}", { timeout: 60 * 1000 }, async function (payload) {
   await this.submitActivity(payload);
   return;
