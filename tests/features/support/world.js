@@ -4,6 +4,7 @@ const { logger } = require("../../../src/utils/logger");
 const { setWorldConstructor } = require("@cucumber/cucumber");
 const FLOWBUILD_URL = process.env.FLOWBUILD_URL;
 const actualTimeout = setTimeout;
+const mustache = require('mustache');
 
 function wait(ms = 5000) {
   return new Promise((resolve) => {
@@ -59,6 +60,26 @@ class CustomWorld {
 
   async submitActivity(payload) {
     logger.info(`submitActivity ${this.amid}`);
+    // const newPayload = payload.replaceAll('{{','"').replaceAll('}}','"');
+    if(payload.includes('{{')) {
+      await this.getProcessHistory();
+      const nodeState = this.history.find(state => state.status === "waiting");
+      const middlePayload = JSON.parse(mustache.render(payload, nodeState.bag));
+      const payloadPairs = Object.entries(middlePayload).map(subArr => subArr.map(value => value.toString()));
+      const resultPayload = Object.fromEntries(payloadPairs);
+      const response = await axios({
+        method: "post",
+        url: `/activity_manager/${this.amid}/submit`,
+        baseURL: FLOWBUILD_URL,
+        headers: { Authorization: `Bearer ${this.token}` },
+        data: resultPayload,
+      });
+      logger.debug("submitActivity response");
+      if (response.status === 200) {
+        return true;
+      }
+      return false;
+    }
     const response = await axios({
       method: "post",
       url: `/activity_manager/${this.amid}/submit`,
@@ -118,7 +139,6 @@ class CustomWorld {
   }
 
   async getProcessHistory() {
-    await wait(500);
     logger.info(`getProcessHistory ${this.pid}`);
     const response = await axios({
       method: "get",
