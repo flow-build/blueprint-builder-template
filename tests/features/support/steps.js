@@ -1,6 +1,8 @@
 const { Given, When, Then } = require("@cucumber/cucumber");
 const assert = require("assert").strict;
 const actualTimeout = setTimeout;
+const _ = require('lodash');
+const mustache = require('mustache')
 
 function wait(ms = 5000) {
   return new Promise((resolve) => {
@@ -78,6 +80,34 @@ Then("a bag do nó {string} contém a propriedade {string}", { timeout: 60 * 100
   const bagHasProperty = Object.keys(nodeState.bag).includes(property);
   assert.equal(bagHasProperty, true);
   return;
+});
+
+Then("in the bag of {string} the property {string} is equal to {string}", { timeout: 60 * 1000 }, async function (node, property, value) {
+  await this.getProcessHistory();
+  const nodeState = this.history.find(state => state.node_id === node);
+  const bagProperty = nodeState.bag[`${property}`]
+  assert.equal(bagProperty, value);
+  return;
+});
+
+Then("na bag do nó {string} a propriedade {string} é igual a {string}", { timeout: 60 * 1000 }, async function (node, property, value) {
+  await this.getProcessHistory();
+  const nodeState = this.history.find(state => state.node_id === node);
+  if(typeof nodeState.bag[`${property}`] != 'object') {
+    if(value.includes('{{')) {
+      const bagValue = nodeState.bag[`${property}`].toString();
+      const resultValue = mustache.render(value, nodeState.bag).toString();
+      assert.equal(bagValue, resultValue);
+      return;
+    }
+    const bagValue = nodeState.bag[`${property}`].toString();
+    assert.equal(bagValue, value);
+    return;
+  } else {
+    const bagValue = nodeState.bag[`${property}`];
+    assert.equal(_.isEqual(_.sortBy(bagValue), _.sortBy(JSON.parse(value))), true);
+    return;
+  }
 });
 
 Then("the result of {string} has the property {string}", { timeout: 60 * 1000 }, async function (node, property) {
