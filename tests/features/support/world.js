@@ -60,7 +60,6 @@ class CustomWorld {
 
   async submitActivity(payload) {
     logger.info(`submitActivity ${this.amid}`);
-    // const newPayload = payload.replaceAll('{{','"').replaceAll('}}','"');
     if(payload.includes('{{')) {
       await this.getProcessHistory();
       const nodeState = this.history.find(state => state.status === "waiting");
