@@ -50,7 +50,7 @@ class CustomWorld {
       url: `/workflows/name/${workflowName}/start`,
       baseURL: FLOWBUILD_URL,
       headers: { Authorization: `Bearer ${this.token}` },
-      data: initialBag,
+      data: JSON.parse(initialBag),
     });
     logger.debug("startProcess received");
     this.pid = response.data.process_id;
