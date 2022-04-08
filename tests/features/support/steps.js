@@ -85,9 +85,21 @@ Then("a bag do nó {string} contém a propriedade {string}", { timeout: 60 * 100
 Then("in the bag of {string} the property {string} is equal to {string}", { timeout: 60 * 1000 }, async function (node, property, value) {
   await this.getProcessHistory();
   const nodeState = this.history.find(state => state.node_id === node);
-  const bagProperty = nodeState.bag[`${property}`]
-  assert.equal(bagProperty, value);
-  return;
+  if(typeof nodeState.bag[`${property}`] != 'object') {
+    if(value.includes('{{')) {
+      const bagValue = nodeState.bag[`${property}`].toString();
+      const resultValue = mustache.render(value, nodeState.bag).toString();
+      assert.equal(bagValue, resultValue);
+      return;
+    }
+    const bagValue = nodeState.bag[`${property}`].toString();
+    assert.equal(bagValue, value);
+    return;
+  } else {
+    const bagValue = nodeState.bag[`${property}`];
+    assert.equal(_.isEqual(_.sortBy(bagValue), _.sortBy(JSON.parse(value))), true);
+    return;
+  }
 });
 
 Then("na bag do nó {string} a propriedade {string} é igual a {string}", { timeout: 60 * 1000 }, async function (node, property, value) {
@@ -107,6 +119,82 @@ Then("na bag do nó {string} a propriedade {string} é igual a {string}", { time
     const bagValue = nodeState.bag[`${property}`];
     assert.equal(_.isEqual(_.sortBy(bagValue), _.sortBy(JSON.parse(value))), true);
     return;
+  }
+});
+
+Then("in the result of {string} the property {string} is equal to {string}", { timeout: 60 * 1000 }, async function (node, property, value) {
+  await this.getProcessHistory();
+  const nodeState = this.history.find(state => state.node_id === node && state.status === "running");
+  if(nodeState.result.activities[0].data) {
+    if(typeof nodeState.result.activities[0].data[`${property}`] != 'object') {
+      if(value.includes('{{')) {
+        const resultValue = nodeState.result.activities[0].data[`${property}`].toString();
+        const finalValue = mustache.render(value, nodeState.bag).toString();
+        assert.equal(resultValue, finalValue);
+        return;
+      }
+      const resultValue = nodeState.result.activities[0].data[`${property}`].toString();
+      assert.equal(resultValue, value);
+      return;
+    } else {
+      const resultValue = nodeState.result.activities[0].data[`${property}`];
+      assert.equal(_.isEqual(_.sortBy(resultValue), _.sortBy(JSON.parse(value))), true);
+      return;
+    }
+  } else {
+    if(typeof nodeState.result.data[`${property}`] != 'object') {
+      if(value.includes('{{')) {
+        const resultValue = nodeState.result.data[`${property}`].toString();
+        const finalValue = mustache.render(value, nodeState.bag).toString();
+        assert.equal(resultValue, finalValue);
+        return;
+      }
+      const resultValue = nodeState.result.data[`${property}`].toString();
+      assert.equal(resultValue, value);
+      return;
+    } else {
+      const resultValue = nodeState.result.data[`${property}`];
+      assert.equal(_.isEqual(_.sortBy(resultValue), _.sortBy(JSON.parse(value))), true);
+      return;
+    }
+  }
+});
+
+Then("no result do nó {string} a propriedade {string} é igual a {string}", { timeout: 60 * 1000 }, async function (node, property, value) {
+  await this.getProcessHistory();
+  const nodeState = this.history.find(state => state.node_id === node && state.status === "running");
+  if(nodeState.result.activities[0].data) {
+    if(typeof nodeState.result.activities[0].data[`${property}`] != 'object') {
+      if(value.includes('{{')) {
+        const resultValue = nodeState.result.activities[0].data[`${property}`].toString();
+        const finalValue = mustache.render(value, nodeState.bag).toString();
+        assert.equal(resultValue, finalValue);
+        return;
+      }
+      const resultValue = nodeState.result.activities[0].data[`${property}`].toString();
+      assert.equal(resultValue, value);
+      return;
+    } else {
+      const resultValue = nodeState.result.activities[0].data[`${property}`];
+      assert.equal(_.isEqual(_.sortBy(resultValue), _.sortBy(JSON.parse(value))), true);
+      return;
+    }
+  } else {
+    if(typeof nodeState.result.data[`${property}`] != 'object') {
+      if(value.includes('{{')) {
+        const resultValue = nodeState.result.data[`${property}`].toString();
+        const finalValue = mustache.render(value, nodeState.bag).toString();
+        assert.equal(resultValue, finalValue);
+        return;
+      }
+      const resultValue = nodeState.result.data[`${property}`].toString();
+      assert.equal(resultValue, value);
+      return;
+    } else {
+      const resultValue = nodeState.result.data[`${property}`];
+      assert.equal(_.isEqual(_.sortBy(resultValue), _.sortBy(JSON.parse(value))), true);
+      return;
+    }
   }
 });
 
