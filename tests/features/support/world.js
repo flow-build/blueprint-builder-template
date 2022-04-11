@@ -5,6 +5,8 @@ const { setWorldConstructor } = require("@cucumber/cucumber");
 const FLOWBUILD_URL = process.env.FLOWBUILD_URL;
 const actualTimeout = setTimeout;
 const mustache = require('mustache');
+const _ = require('lodash');
+let worldData = {};
 
 function wait(ms = 5000) {
   return new Promise((resolve) => {
@@ -133,6 +135,23 @@ class CustomWorld {
     });
     logger.debug(`getProcessHistory response ${response.status}`);
     this.history = response.data;
+    return;
+  }
+
+  async saveValue(variable, property) {
+    const nodeState = this.history[0];
+    const stateHasProperty = _.has(nodeState, property);
+    if(stateHasProperty) {
+      const worldHasProperty = _.has(worldData, variable);
+      if(!worldHasProperty) {
+        worldData[variable] = _.get(nodeState, property);
+        logger.info(`Variável ${variable} salva no World com o valor: ${worldData[variable]}`);
+        return;
+      }
+      logger.info(`World já possui a variável ${variable} salva com o valor: ${worldData[variable]}`);
+      return;
+    }
+    logger.info(`O processo não possui a propriedade ${property}`);
     return;
   }
 }
