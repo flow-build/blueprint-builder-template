@@ -64,8 +64,7 @@ class CustomWorld {
     logger.info(`submitActivity ${this.amid}`);
     if(payload.includes('{{')) {
       await this.getProcessHistory();
-      const nodeState = this.history.find(state => state.status === "waiting");
-      const middlePayload = JSON.parse(mustache.render(payload, nodeState.bag));
+      const middlePayload = JSON.parse(mustache.render(payload, worldData));
       const payloadPairs = Object.entries(middlePayload).map(subArr => subArr.map(value => value.toString()));
       this.resultPayload = Object.fromEntries(payloadPairs);
     } else {
