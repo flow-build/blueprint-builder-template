@@ -39,8 +39,8 @@ Given(
   }
 );
 
-Then("the process passes through {string}", { timeout: 60 * 1000 }, async function (node) {
-  await wait(500);
+Then("the process passed through {string}", { timeout: 60 * 1000 }, async function (node) {
+  await this.waitProcessStop();
   await this.getProcessHistory();
   const nodeState = this.history.find(state => state.node_id === node);
   assert.equal(nodeState.node_id, node);
@@ -48,8 +48,8 @@ Then("the process passes through {string}", { timeout: 60 * 1000 }, async functi
   return;
 });
 
-Then("o processo passa pelo nó {string}", { timeout: 60 * 1000 }, async function (node) {
-  await wait(500);
+Then("o processo passou pelo nó {string}", { timeout: 60 * 1000 }, async function (node) {
+  await this.waitProcessStop();
   await this.getProcessHistory();
   const nodeState = this.history.find(state => state.node_id === node);
   assert.equal(nodeState.node_id, node);
