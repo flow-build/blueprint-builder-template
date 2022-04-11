@@ -1,5 +1,6 @@
 const { Given, When, Then } = require("@cucumber/cucumber");
 const assert = require("assert").strict;
+const _ = require('lodash');
 
 Given("the default user is logged in", { timeout: 60 * 1000 }, async function () {
   await this.getToken();
@@ -60,7 +61,7 @@ Then("o processo passou pelo nó {string}", { timeout: 60 * 1000 }, async functi
 Then("the bag of {string} has the property {string}", { timeout: 60 * 1000 }, async function (node, property) {
   await this.getProcessHistory();
   const nodeState = this.history.find(state => state.node_id === node);
-  const bagHasProperty = Object.keys(nodeState.bag).includes(property);
+  const bagHasProperty = _.has(nodeState.bag, property);
   assert.equal(bagHasProperty, true);
   return;
 });
@@ -68,32 +69,24 @@ Then("the bag of {string} has the property {string}", { timeout: 60 * 1000 }, as
 Then("a bag do nó {string} contém a propriedade {string}", { timeout: 60 * 1000 }, async function (node, property) {
   await this.getProcessHistory();
   const nodeState = this.history.find(state => state.node_id === node);
-  const bagHasProperty = Object.keys(nodeState.bag).includes(property);
+  const bagHasProperty = _.has(nodeState.bag, property);
   assert.equal(bagHasProperty, true);
   return;
 });
 
 Then("the result of {string} has the property {string}", { timeout: 60 * 1000 }, async function (node, property) {
   await this.getProcessHistory();
-  const nodeState = this.history.find(state => state.node_id === node && state.status === "running");
-  if(nodeState.result.activities[0].data) {
-    this.resultHasProperty = Object.keys(nodeState.result.activities[0].data).includes(property);
-  } else {
-    this.resultHasProperty = Object.keys(nodeState.result.data).includes(property);
-  }
-  assert.equal(this.resultHasProperty, true);
+  const nodeState = this.history.find(state => state.node_id === node);
+  const resultHasProperty = _.has(nodeState.result, property);
+  assert.equal(resultHasProperty, true);
   return;
 });
 
 Then("o result do nó {string} contém a propriedade {string}", { timeout: 60 * 1000 }, async function (node, property) {
   await this.getProcessHistory();
-  const nodeState = this.history.find(state => state.node_id === node && state.status === "running");
-  if(nodeState.result.activities[0].data) {
-    this.resultHasProperty = Object.keys(nodeState.result.activities[0].data).includes(property);
-  } else {
-    this.resultHasProperty = Object.keys(nodeState.result.data).includes(property);
-  }
-  assert.equal(this.resultHasProperty, true);
+  const nodeState = this.history.find(state => state.node_id === node);
+  const resultHasProperty = _.has(nodeState.result, property);
+  assert.equal(resultHasProperty, true);
   return;
 });
 
