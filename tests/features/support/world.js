@@ -91,10 +91,6 @@ class CustomWorld {
       await this.getCurrentState();
       logger.debug(`process status: ${this.currentStatus}`);
     } while (!expectedStatus.includes(this.currentStatus));
-
-    if (this.currentStatus === "waiting") {
-      await this.getCurrentActivity();
-    }
     return;
   }
 
