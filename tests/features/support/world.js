@@ -145,6 +145,7 @@ class CustomWorld {
       if(!worldHasProperty) {
         worldData[variable] = _.get(nodeState, property);
         logger.info(`Variável ${variable} salva no World com o valor: ${worldData[variable]}`);
+        this.worldData = worldData;
         return;
       }
       logger.info(`World já possui a variável ${variable} salva com o valor: ${worldData[variable]}`);
