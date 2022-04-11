@@ -1,12 +1,5 @@
 const { Given, When, Then } = require("@cucumber/cucumber");
 const assert = require("assert").strict;
-const actualTimeout = setTimeout;
-
-function wait(ms = 5000) {
-  return new Promise((resolve) => {
-    actualTimeout(resolve, ms);
-  });
-}
 
 Given("the default user is logged in", { timeout: 60 * 1000 }, async function () {
   await this.getToken();
@@ -108,6 +101,7 @@ When("o usuário submete {string}", { timeout: 60 * 1000 }, async function (payl
 
 Then("the process waits at {string}", { timeout: 60 * 1000 }, async function (node) {
   await this.waitProcessStop();
+  await this.getCurrentActivity();
   assert.equal(this.currentStatus, "waiting");
   assert.equal(this.nodeId, node);
   return;
@@ -115,6 +109,7 @@ Then("the process waits at {string}", { timeout: 60 * 1000 }, async function (no
 
 Then("o processo para no nó {string}", { timeout: 60 * 1000 }, async function (node) {
   await this.waitProcessStop();
+  await this.getCurrentActivity();
   assert.equal(this.currentStatus, "waiting");
   assert.equal(this.nodeId, node);
   return;
