@@ -89,6 +89,19 @@ Then("o processo passou pelo menos {int} vezes pelo nó {string}", { timeout: 60
   return;
 });
 
+Then("save the variable {string} with the value {string}", { timeout: 60 * 1000 }, async function (variable, property) {
+  await this.getProcessHistory();
+  await this.saveValue(variable, property);
+  return;
+});
+
+Then("salvo a variável {string} com o valor de {string}", { timeout: 60 * 1000 }, async function (variable, property) {
+  await this.getProcessHistory();
+  await this.saveValue(variable, property);
+  return;
+});
+
+
 When("the user submits {string}", { timeout: 60 * 1000 }, async function (payload) {
   await this.submitActivity(payload);
   return;
