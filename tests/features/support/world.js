@@ -4,6 +4,15 @@ const { logger } = require("../../../src/utils/logger");
 const { setWorldConstructor } = require("@cucumber/cucumber");
 const FLOWBUILD_URL = process.env.FLOWBUILD_URL;
 const actualTimeout = setTimeout;
+const mustache = require('mustache');
+const _ = require('lodash');
+const fs = require('fs');
+if (!fs.existsSync("tests/features/support/worldData.json")) {
+  fs.writeFileSync("tests/features/support/worldData.json", "{}", (err) => {
+    if (err) throw err;
+  });
+}
+let worldData = require('./worldData.json');
 
 function wait(ms = 5000) {
   return new Promise((resolve) => {
@@ -49,7 +58,7 @@ class CustomWorld {
       url: `/workflows/name/${workflowName}/start`,
       baseURL: FLOWBUILD_URL,
       headers: { Authorization: `Bearer ${this.token}` },
-      data: initialBag,
+      data: JSON.parse(initialBag),
     });
     logger.debug("startProcess received");
     this.pid = response.data.process_id;
@@ -59,12 +68,20 @@ class CustomWorld {
 
   async submitActivity(payload) {
     logger.info(`submitActivity ${this.amid}`);
+    if(payload.includes('{{')) {
+      await this.getProcessHistory();
+      const middlePayload = JSON.parse(mustache.render(payload, worldData));
+      const payloadPairs = Object.entries(middlePayload).map(subArr => subArr.map(value => value.toString()));
+      this.resultPayload = Object.fromEntries(payloadPairs);
+    } else {
+      this.resultPayload = JSON.parse(payload);
+    }
     const response = await axios({
       method: "post",
       url: `/activity_manager/${this.amid}/submit`,
       baseURL: FLOWBUILD_URL,
       headers: { Authorization: `Bearer ${this.token}` },
-      data: JSON.parse(payload),
+      data: this.resultPayload,
     });
     logger.debug("submitActivity response");
     if (response.status === 200) {
@@ -81,10 +98,6 @@ class CustomWorld {
       await this.getCurrentState();
       logger.debug(`process status: ${this.currentStatus}`);
     } while (!expectedStatus.includes(this.currentStatus));
-
-    if (this.currentStatus === "waiting") {
-      await this.getCurrentActivity();
-    }
     return;
   }
 
@@ -118,7 +131,6 @@ class CustomWorld {
   }
 
   async getProcessHistory() {
-    await wait(500);
     logger.info(`getProcessHistory ${this.pid}`);
     const response = await axios({
       method: "get",
@@ -128,6 +140,26 @@ class CustomWorld {
     });
     logger.debug(`getProcessHistory response ${response.status}`);
     this.history = response.data;
+    return;
+  }
+
+  async saveValue(variable, property) {
+    const nodeState = this.history[0];
+    const stateHasProperty = _.has(nodeState, property);
+    if(stateHasProperty) {
+      const worldHasProperty = _.has(worldData, variable);
+      if(!worldHasProperty) {
+        worldData[variable] = _.get(nodeState, property);
+        fs.writeFileSync("tests/features/support/worldData.json", JSON.stringify(worldData), err => {
+          if (err) throw err;
+        });
+        logger.info(`Variável ${variable} salva no arquivo worldData.json com o valor: ${worldData[variable]}`);
+        return;
+      }
+      logger.info(`Arquivo worldData.json já possui a variável ${variable} salva com o valor: ${worldData[variable]}`);
+      return;
+    }
+    logger.info(`O processo não possui a propriedade ${property}`);
     return;
   }
 }

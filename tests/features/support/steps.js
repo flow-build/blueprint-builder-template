@@ -39,7 +39,8 @@ Given(
   }
 );
 
-Then("the process passes through {string}", { timeout: 60 * 1000 }, async function (node) {
+Then("the process passed through {string}", { timeout: 60 * 1000 }, async function (node) {
+  await this.waitProcessStop();
   await this.getProcessHistory();
   const nodeState = this.history.find(state => state.node_id === node);
   assert.equal(nodeState.node_id, node);
@@ -47,7 +48,8 @@ Then("the process passes through {string}", { timeout: 60 * 1000 }, async functi
   return;
 });
 
-Then("o processo passa pelo nó {string}", { timeout: 60 * 1000 }, async function (node) {
+Then("o processo passou pelo nó {string}", { timeout: 60 * 1000 }, async function (node) {
+  await this.waitProcessStop();
   await this.getProcessHistory();
   const nodeState = this.history.find(state => state.node_id === node);
   assert.equal(nodeState.node_id, node);
@@ -71,7 +73,7 @@ Then("o processo passou {int} vezes pelo nó {string}", { timeout: 60 * 1000 }, 
   return;
 });
 
-Then("the process passed at least {int} times through {string}", { timeout: 60 * 1000 }, async function (node) {
+Then("the process passed at least {int} times through {string}", { timeout: 60 * 1000 }, async function (passTimes, node) {
   await this.waitProcessStop();
   await this.getProcessHistory();
   const nodeState = this.history.filter(state => state.node_id === node && state.status === "running");
@@ -87,6 +89,19 @@ Then("o processo passou pelo menos {int} vezes pelo nó {string}", { timeout: 60
   return;
 });
 
+Then("save the variable {string} with the value {string}", { timeout: 60 * 1000 }, async function (variable, property) {
+  await this.getProcessHistory();
+  await this.saveValue(variable, property);
+  return;
+});
+
+Then("salvo a variável {string} com o valor de {string}", { timeout: 60 * 1000 }, async function (variable, property) {
+  await this.getProcessHistory();
+  await this.saveValue(variable, property);
+  return;
+});
+
+
 When("the user submits {string}", { timeout: 60 * 1000 }, async function (payload) {
   await this.submitActivity(payload);
   return;
@@ -99,6 +114,7 @@ When("o usuário submete {string}", { timeout: 60 * 1000 }, async function (payl
 
 Then("the process waits at {string}", { timeout: 60 * 1000 }, async function (node) {
   await this.waitProcessStop();
+  await this.getCurrentActivity();
   assert.equal(this.currentStatus, "waiting");
   assert.equal(this.nodeId, node);
   return;
@@ -106,6 +122,7 @@ Then("the process waits at {string}", { timeout: 60 * 1000 }, async function (no
 
 Then("o processo para no nó {string}", { timeout: 60 * 1000 }, async function (node) {
   await this.waitProcessStop();
+  await this.getCurrentActivity();
   assert.equal(this.currentStatus, "waiting");
   assert.equal(this.nodeId, node);
   return;
