@@ -169,15 +169,15 @@ class CustomWorld {
     const nodeState = this.history.find(state => state.node_id === node);
     this.bagValue = _.get(nodeState.bag, property);
     if (value.includes('{{')) {
-      this.verifiedValue = JSON.stringify(_.get(worldData, value.replaceAll('{{', '').replaceAll('}}', '')));
+      this.verifiedValue = _.get(worldData, value.replaceAll(/[{}]/g, ''));
     } else {
-      this.verifiedValue = value;
+      this.verifiedValue = JSON.parse(value);
     }
     if (typeof this.bagValue != 'object') {
       assert.equal(this.bagValue.toString(), this.verifiedValue.toString());
       return true;
     } else {
-      assert.equal(_.isEqual(_.sortBy(this.bagValue), _.sortBy(JSON.parse(this.verifiedValue))), true);
+      assert.equal(_.isEqual(_.sortBy(this.bagValue), _.sortBy(this.verifiedValue)), true);
       return true;
     }
   }
@@ -186,9 +186,9 @@ class CustomWorld {
     const nodeState = this.history.find(state => state.node_id === node);
     this.resultValue = _.get(nodeState.result, property);
     if (value.includes('{{')) {
-      this.verifiedValue = _.get(worldData, value.replaceAll('{{', '').replaceAll('}}', ''));
+      this.verifiedValue = _.get(worldData, value.replaceAll(/[{}]/g, ''));
     } else {
-      this.verifiedValue = value;
+      this.verifiedValue = JSON.parse(value);
     }
     if (typeof this.resultValue != 'object') {
       assert.equal(this.resultValue.toString(), this.verifiedValue.toString());
