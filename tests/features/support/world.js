@@ -6,7 +6,13 @@ const FLOWBUILD_URL = process.env.FLOWBUILD_URL;
 const actualTimeout = setTimeout;
 const mustache = require('mustache');
 const _ = require('lodash');
-let worldData = {};
+const fs = require('fs');
+if (!fs.existsSync("tests/features/support/worldData.json")) {
+  fs.writeFileSync("tests/features/support/worldData.json", "{}", (err) => {
+    if (err) throw err;
+  });
+}
+let worldData = require('./worldData.json');
 
 function wait(ms = 5000) {
   return new Promise((resolve) => {
@@ -144,11 +150,13 @@ class CustomWorld {
       const worldHasProperty = _.has(worldData, variable);
       if(!worldHasProperty) {
         worldData[variable] = _.get(nodeState, property);
-        logger.info(`Variável ${variable} salva no World com o valor: ${worldData[variable]}`);
-        this.worldData = worldData;
+        fs.writeFileSync("tests/features/support/worldData.json", JSON.stringify(worldData), err => {
+          if (err) throw err;
+        });
+        logger.info(`Variável ${variable} salva no arquivo worldData.json com o valor: ${worldData[variable]}`);
         return;
       }
-      logger.info(`World já possui a variável ${variable} salva com o valor: ${worldData[variable]}`);
+      logger.info(`Arquivo worldData.json já possui a variável ${variable} salva com o valor: ${worldData[variable]}`);
       return;
     }
     logger.info(`O processo não possui a propriedade ${property}`);
