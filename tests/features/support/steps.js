@@ -1,7 +1,6 @@
 const { Given, When, Then } = require("@cucumber/cucumber");
 const assert = require("assert").strict;
 const _ = require('lodash');
-const mustache = require('mustache');
 
 Given("the default user is logged in", { timeout: 60 * 1000 }, async function () {
   await this.getToken();
@@ -80,77 +79,33 @@ Then("a bag do nó {string} contém a propriedade {string}", { timeout: 60 * 100
 Then("in the bag of {string} the property {string} is equal to {string}", { timeout: 60 * 1000 }, async function (node, property, value) {
   await this.waitProcessStop();
   await this.getProcessHistory();
-  const nodeState = this.history.find(state => state.node_id === node);
-  this.bagValue = _.get(nodeState.bag, property);
-  if(typeof this.bagValue != 'object') {
-    if(value.includes('{{')) {
-      const verifiedValue = mustache.render(value, this.worldData).toString();
-      assert.equal(this.bagValue.toString(), verifiedValue);
-      return;
-    }
-    assert.equal(this.bagValue.toString(), value);
-    return;
-  } else {
-    assert.equal(_.isEqual(_.sortBy(this.bagValue), _.sortBy(JSON.parse(value))), true);
-    return;
-  }
+  const response = await this.checkBagValue(node, property, value);
+  assert.equal(response, true);
+  return;
 });
 
 Then("na bag do nó {string} a propriedade {string} é igual a {string}", { timeout: 60 * 1000 }, async function (node, property, value) {
   await this.waitProcessStop();
   await this.getProcessHistory();
-  const nodeState = this.history.find(state => state.node_id === node);
-  this.bagValue = _.get(nodeState.bag, property);
-  if(typeof this.bagValue != 'object') {
-    if(value.includes('{{')) {
-      const verifiedValue = mustache.render(value, this.worldData).toString();
-      assert.equal(this.bagValue.toString(), verifiedValue);
-      return;
-    }
-    assert.equal(this.bagValue.toString(), value);
-    return;
-  } else {
-    assert.equal(_.isEqual(_.sortBy(this.bagValue), _.sortBy(JSON.parse(value))), true);
-    return;
-  }
+  const response = await this.checkBagValue(node, property, value);
+  assert.equal(response, true);
+  return;
 });
 
 Then("in the result of {string} the property {string} is equal to {string}", { timeout: 60 * 1000 }, async function (node, property, value) {
   await this.waitProcessStop();
   await this.getProcessHistory();
-  const nodeState = this.history.find(state => state.node_id === node && state.status === "running");
-  this.resultValue = _.get(nodeState.result, property);
-  if(typeof this.resultValue != 'object') {
-    if(value.includes('{{')) {
-      const verifiedValue = mustache.render(value, this.worldData).toString();
-      assert.equal(this.resultValue.toString(), verifiedValue);
-      return;
-    }
-    assert.equal(this.resultValue.toString(), value);
-    return;
-  } else {
-    assert.equal(_.isEqual(_.sortBy(this.resultValue), _.sortBy(JSON.parse(value))), true);
-    return;
-  }
+  const response = await this.checkResultValue(node, property, value);
+  assert.equal(response, true);
+  return;
 });
 
 Then("no result do nó {string} a propriedade {string} é igual a {string}", { timeout: 60 * 1000 }, async function (node, property, value) {
   await this.waitProcessStop();
   await this.getProcessHistory();
-  const nodeState = this.history.find(state => state.node_id === node && state.status === "running");
-  this.resultValue = _.get(nodeState.result, property);
-  if(typeof this.resultValue != 'object') {
-    if(value.includes('{{')) {
-      const verifiedValue = mustache.render(value, this.worldData).toString();
-      assert.equal(this.resultValue.toString(), verifiedValue);
-      return;
-    }
-    assert.equal(this.resultValue.toString(), value);
-    return;
-  } else {
-    assert.equal(_.isEqual(_.sortBy(this.resultValue), _.sortBy(JSON.parse(value))), true);
-    return;
-  }
+  const response = await this.checkResultValue(node, property, value);
+  assert.equal(response, true);
+  return;
 });
 
 Then("the result of {string} has the property {string}", { timeout: 60 * 1000 }, async function (node, property) {

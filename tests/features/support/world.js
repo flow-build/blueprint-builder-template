@@ -7,6 +7,8 @@ const actualTimeout = setTimeout;
 const mustache = require('mustache');
 const _ = require('lodash');
 const fs = require('fs');
+const assert = require("assert").strict;
+
 if (!fs.existsSync("tests/features/support/worldData.json")) {
   fs.writeFileSync("tests/features/support/worldData.json", "{}", (err) => {
     if (err) throw err;
@@ -153,7 +155,6 @@ class CustomWorld {
         fs.writeFileSync("tests/features/support/worldData.json", JSON.stringify(worldData), err => {
           if (err) throw err;
         });
-        this.worldData = worldData;
         logger.info(`Variável ${variable} salva no arquivo worldData.json com o valor: ${worldData[variable]}`);
         return;
       }
@@ -163,6 +164,41 @@ class CustomWorld {
     logger.info(`O processo não possui a propriedade ${property}`);
     return;
   }
+
+  async checkBagValue(node, property, value) {
+    const nodeState = this.history.find(state => state.node_id === node);
+    this.bagValue = _.get(nodeState.bag, property);
+    if (typeof this.bagValue != 'object') {
+      if (value.includes('{{')) {
+        const verifiedValue = mustache.render(value, worldData).toString();
+        assert.equal(this.bagValue.toString(), verifiedValue);
+        return true;
+      }
+      assert.equal(this.bagValue.toString(), value);
+      return true;
+    } else {
+      assert.equal(_.isEqual(_.sortBy(this.bagValue), _.sortBy(JSON.parse(value))), true);
+      return true;
+    }
+  }
+
+  async checkResultValue(node, property, value) {
+    const nodeState = this.history.find(state => state.node_id === node);
+    this.resultValue = _.get(nodeState.result, property);
+    if (typeof this.resultValue != 'object') {
+      if (value.includes('{{')) {
+        const verifiedValue = mustache.render(value, worldData).toString();
+        assert.equal(this.resultValue.toString(), verifiedValue);
+        return true;
+      }
+      assert.equal(this.resultValue.toString(), value);
+      return true;
+    } else {
+      assert.equal(_.isEqual(_.sortBy(this.resultValue), _.sortBy(JSON.parse(value))), true);
+      return true;
+    }
+  }
+
 }
 
 setWorldConstructor(CustomWorld);
