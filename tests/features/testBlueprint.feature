@@ -22,7 +22,7 @@ Funcionalidade: testBlueprint
     Dado que um usuario anonimo esta logado
     E que um processo de 'testBlueprint' foi iniciado com os dados iniciais '{}'
     Então o processo passou pelo nó 'GENERATE-TOKEN-TEST'
-    Então salvo a variável 'token' com o valor de 'bag.token'
+    Então salvo a variável 'count' com o valor de 'bag.count'
     E a bag do nó 'GENERATE-TOKEN-TEST' contém a propriedade 'test_bag.first'
     E na bag do nó 'CHECK-COUNT-TEST' a propriedade 'count' é igual a '{{count}}'
     E o processo para no nó 'CONFIRM-TOKEN-TEST'
