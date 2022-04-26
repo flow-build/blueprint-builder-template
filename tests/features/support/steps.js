@@ -1,5 +1,6 @@
 const { Given, When, Then } = require("@cucumber/cucumber");
 const assert = require("assert").strict;
+const _ = require('lodash');
 
 Given("the default user is logged in", { timeout: 60 * 1000 }, async function () {
   await this.getToken();
@@ -54,6 +55,38 @@ Then("o processo passou pelo nó {string}", { timeout: 60 * 1000 }, async functi
   const nodeState = this.history.find(state => state.node_id === node);
   assert.equal(nodeState.node_id, node);
   assert.equal(nodeState.status, "running");
+  return;
+});
+
+Then("the bag of {string} has the property {string}", { timeout: 60 * 1000 }, async function (node, property) {
+  await this.getProcessHistory();
+  const nodeState = this.history.find(state => state.node_id === node);
+  const bagHasProperty = _.has(nodeState.bag, property);
+  assert.equal(bagHasProperty, true);
+  return;
+});
+
+Then("a bag do nó {string} contém a propriedade {string}", { timeout: 60 * 1000 }, async function (node, property) {
+  await this.getProcessHistory();
+  const nodeState = this.history.find(state => state.node_id === node);
+  const bagHasProperty = _.has(nodeState.bag, property);
+  assert.equal(bagHasProperty, true);
+  return;
+});
+
+Then("the result of {string} has the property {string}", { timeout: 60 * 1000 }, async function (node, property) {
+  await this.getProcessHistory();
+  const nodeState = this.history.find(state => state.node_id === node);
+  const resultHasProperty = _.has(nodeState.result, property);
+  assert.equal(resultHasProperty, true);
+  return;
+});
+
+Then("o result do nó {string} contém a propriedade {string}", { timeout: 60 * 1000 }, async function (node, property) {
+  await this.getProcessHistory();
+  const nodeState = this.history.find(state => state.node_id === node);
+  const resultHasProperty = _.has(nodeState.result, property);
+  assert.equal(resultHasProperty, true);
   return;
 });
 
