@@ -153,6 +153,7 @@ class CustomWorld {
         fs.writeFileSync("tests/features/support/worldData.json", JSON.stringify(worldData), err => {
           if (err) throw err;
         });
+        this.worldData = worldData;
         logger.info(`Variável ${variable} salva no arquivo worldData.json com o valor: ${worldData[variable]}`);
         return;
       }
