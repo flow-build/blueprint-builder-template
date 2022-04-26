@@ -60,6 +60,7 @@ Then("o processo passou pelo nó {string}", { timeout: 60 * 1000 }, async functi
 });
 
 Then("the bag of {string} has the property {string}", { timeout: 60 * 1000 }, async function (node, property) {
+  await this.waitProcessStop();
   await this.getProcessHistory();
   const nodeState = this.history.find(state => state.node_id === node);
   const bagHasProperty = _.has(nodeState.bag, property);
@@ -68,6 +69,7 @@ Then("the bag of {string} has the property {string}", { timeout: 60 * 1000 }, as
 });
 
 Then("a bag do nó {string} contém a propriedade {string}", { timeout: 60 * 1000 }, async function (node, property) {
+  await this.waitProcessStop();
   await this.getProcessHistory();
   const nodeState = this.history.find(state => state.node_id === node);
   const bagHasProperty = _.has(nodeState.bag, property);
@@ -76,6 +78,7 @@ Then("a bag do nó {string} contém a propriedade {string}", { timeout: 60 * 100
 });
 
 Then("in the bag of {string} the property {string} is equal to {string}", { timeout: 60 * 1000 }, async function (node, property, value) {
+  await this.waitProcessStop();
   await this.getProcessHistory();
   const nodeState = this.history.find(state => state.node_id === node);
   this.bagValue = _.get(nodeState.bag, property);
@@ -94,6 +97,7 @@ Then("in the bag of {string} the property {string} is equal to {string}", { time
 });
 
 Then("na bag do nó {string} a propriedade {string} é igual a {string}", { timeout: 60 * 1000 }, async function (node, property, value) {
+  await this.waitProcessStop();
   await this.getProcessHistory();
   const nodeState = this.history.find(state => state.node_id === node);
   this.bagValue = _.get(nodeState.bag, property);
@@ -112,6 +116,7 @@ Then("na bag do nó {string} a propriedade {string} é igual a {string}", { time
 });
 
 Then("in the result of {string} the property {string} is equal to {string}", { timeout: 60 * 1000 }, async function (node, property, value) {
+  await this.waitProcessStop();
   await this.getProcessHistory();
   const nodeState = this.history.find(state => state.node_id === node && state.status === "running");
   this.resultValue = _.get(nodeState.result, property);
@@ -130,6 +135,7 @@ Then("in the result of {string} the property {string} is equal to {string}", { t
 });
 
 Then("no result do nó {string} a propriedade {string} é igual a {string}", { timeout: 60 * 1000 }, async function (node, property, value) {
+  await this.waitProcessStop();
   await this.getProcessHistory();
   const nodeState = this.history.find(state => state.node_id === node && state.status === "running");
   this.resultValue = _.get(nodeState.result, property);
@@ -148,6 +154,7 @@ Then("no result do nó {string} a propriedade {string} é igual a {string}", { t
 });
 
 Then("the result of {string} has the property {string}", { timeout: 60 * 1000 }, async function (node, property) {
+  await this.waitProcessStop();
   await this.getProcessHistory();
   const nodeState = this.history.find(state => state.node_id === node) && state.status === "running";
   const resultHasProperty = _.has(nodeState.result, property);
@@ -156,6 +163,7 @@ Then("the result of {string} has the property {string}", { timeout: 60 * 1000 },
 });
 
 Then("o result do nó {string} contém a propriedade {string}", { timeout: 60 * 1000 }, async function (node, property) {
+  await this.waitProcessStop();
   await this.getProcessHistory();
   const nodeState = this.history.find(state => state.node_id === node && state.status === "running");
   const resultHasProperty = _.has(nodeState.result, property);
