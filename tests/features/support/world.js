@@ -168,16 +168,16 @@ class CustomWorld {
   async checkBagValue(node, property, value) {
     const nodeState = this.history.find(state => state.node_id === node);
     this.bagValue = _.get(nodeState.bag, property);
+    if (value.includes('{{')) {
+      this.verifiedValue = JSON.stringify(_.get(worldData, value.replaceAll('{{', '').replaceAll('}}', '')));
+    } else {
+      this.verifiedValue = value;
+    }
     if (typeof this.bagValue != 'object') {
-      if (value.includes('{{')) {
-        const verifiedValue = mustache.render(value, worldData).toString();
-        assert.equal(this.bagValue.toString(), verifiedValue);
-        return true;
-      }
-      assert.equal(this.bagValue.toString(), value);
+      assert.equal(this.bagValue.toString(), this.verifiedValue.toString());
       return true;
     } else {
-      assert.equal(_.isEqual(_.sortBy(this.bagValue), _.sortBy(JSON.parse(value))), true);
+      assert.equal(_.isEqual(_.sortBy(this.bagValue), _.sortBy(JSON.parse(this.verifiedValue))), true);
       return true;
     }
   }
@@ -185,16 +185,16 @@ class CustomWorld {
   async checkResultValue(node, property, value) {
     const nodeState = this.history.find(state => state.node_id === node);
     this.resultValue = _.get(nodeState.result, property);
+    if (value.includes('{{')) {
+      this.verifiedValue = _.get(worldData, value.replaceAll('{{', '').replaceAll('}}', ''));
+    } else {
+      this.verifiedValue = value;
+    }
     if (typeof this.resultValue != 'object') {
-      if (value.includes('{{')) {
-        const verifiedValue = mustache.render(value, worldData).toString();
-        assert.equal(this.resultValue.toString(), verifiedValue);
-        return true;
-      }
-      assert.equal(this.resultValue.toString(), value);
+      assert.equal(this.resultValue.toString(), this.verifiedValue.toString());
       return true;
     } else {
-      assert.equal(_.isEqual(_.sortBy(this.resultValue), _.sortBy(JSON.parse(value))), true);
+      assert.equal(_.isEqual(_.sortBy(this.resultValue), _.sortBy(this.verifiedValue)), true);
       return true;
     }
   }
