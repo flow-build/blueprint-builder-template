@@ -183,7 +183,7 @@ class CustomWorld {
   }
 
   async checkResultValue(node, property, value) {
-    const nodeState = this.history.find(state => state.node_id === node);
+    const nodeState = this.history.find(state => state.node_id === node && state.status === "running");
     this.resultValue = _.get(nodeState.result, property);
     if (value.includes('{{')) {
       this.verifiedValue = _.get(worldData, value.replaceAll(/[{}]/g, ''));
