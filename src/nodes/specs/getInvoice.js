@@ -27,7 +27,7 @@ module.exports = [
     next: "END",
     type: "SystemTask",
     category: "setToBag",
-    lane_id: "free",
+    lane_id: "sessionId",
     parameters: {
       input: {
         invoice: { $ref: "result.data" },

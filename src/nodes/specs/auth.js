@@ -37,9 +37,7 @@ module.exports = [
     lane_id: "sessionId",
     parameters: {
       input: {
-        user: {
-          $ref: "result.data.user",
-        },
+        user: { $ref: "result.data.user" },
       },
     },
   },

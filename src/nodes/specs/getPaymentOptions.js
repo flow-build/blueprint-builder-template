@@ -10,7 +10,7 @@ module.exports = [
       input: {},
       request: {
         verb: "GET",
-        url: { $mustache: 'http://{{bag.postgrest.url}}/payment_options?user_id=eq.{{bag.actor.actorId}}' },
+        url: { $mustache: 'http://{{environment.POSTGREST_URL}}/payment_options?user_id=eq.{{bag.cart.user_id}}' },
         headers: {
           ContentType: "application/json",
         },

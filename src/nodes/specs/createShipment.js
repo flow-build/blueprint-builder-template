@@ -8,11 +8,22 @@ module.exports = [
     lane_id: "sessionId",
     parameters: {
       input: {
+        id: {
+          $js: `() => {
+            var dt = new Date().getTime();
+            var uuid = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
+              var r = (dt + Math.random() * 16) % 16 | 0;
+              dt = Math.floor(dt / 16);
+              return (c == "x" ? r : (r & 0x3) | 0x8).toString(16);
+            });
+            return uuid;
+          }`,
+        },
         opcode: "CARRIER",
         status_code: "WAITING"
       },
       request: {
-        verb: "PATCH",
+        verb: "POST",
         url: { $mustache: 'http://{{bag.postgrest.url}}/shipments' },
         headers: {
           ContentType: "application/json",

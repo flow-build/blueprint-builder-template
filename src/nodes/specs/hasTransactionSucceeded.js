@@ -3,13 +3,13 @@ module.exports = {
   name: "HAS TRANSACTION SUCCEEDED",
   type: "Flow",
   next: {
-    true: "PAYMENT-SUCCESS",
+    true: "HAS-REMAINING-PAYMENT",
     default: "IS-ERROR-FINAL"
   },
   lane_id: "sessionId",
   parameters: {
     input: {
-      decision: { $js: "({result}) => result.activities[0].data.status === 'SUCCESS'" }
+      decision: { $js: "({result}) => result.data.status_code === 'SUCCESS'" }
     }
   }
 }

@@ -16,6 +16,10 @@ const nodes = [
   }, {
     nodeSpec: "getOrder",
     id: "GET-ORDER",
+    next: "GET-PAYMENTS",
+  }, {
+    nodeSpec: "getPayments",
+    id: "GET-PAYMENTS",
     next: "PENDING-PAYMENT-PICK-FIRST",
   }, {
     nodeSpec: "pendingPaymentPickFirst",
@@ -28,10 +32,6 @@ const nodes = [
   }, {
     nodeSpec: "hasTransactionSucceeded",
     id: "HAS-TRANSACTION-SUCCEEDED"
-  }, {
-    nodeSpec: "updatePayment",
-    id: "PAYMENT-SUCCESS",
-    next: "HAS-REMAINING-PAYMENT",
   }, {
     nodeSpec: "hasRemainingPayments",
     id: "HAS-REMAINING-PAYMENT"
@@ -66,10 +66,10 @@ const nodes = [
   }, {
     nodeSpec: "notifyUser",
     id: "NOTIFY-USER",
-    next: "UPDATE-INVOICE-ERROR",
+    next: "UPDATE-ORDER-ERROR",
   }, {
-    nodeSpec: "updateOrder",
-    id: "UPDATE-INVOICE-ERROR",
+    nodeSpec: "updateOrder1",
+    id: "UPDATE-ORDER-ERROR",
     next: "END-ERROR",
     parameters: {
       input: {
@@ -101,6 +101,9 @@ module.exports = {
     prepare: [],
     nodes: getNodes(nodes),
     lanes: getLanes(getNodes(nodes)),
-    environment: {},
+    environment: {
+      "RPC_URL": "RPC_URL",
+      "POSTGREST_URL": "POSTGREST_URL"
+    },
   },
 };

@@ -10,6 +10,9 @@ module.exports = {
       postgrest: {
         url: process.env.POSTGREST_URL,
       },
+      grok: {
+        url: process.env.GROK_URL
+      },
       cart: {
         id: { $ref: "bag.cartId" }
       },

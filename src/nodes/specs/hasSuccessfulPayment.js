@@ -3,8 +3,8 @@ module.exports = {
   name: "HAS SUCCESSFUL PAYMENT",
   type: "Flow",
   next: {
-    true: "PAYMENT-SUCCESS",
-    default: "IS-ERROR-FINAL"
+    true: "PAYMENT-PICK-FIRST",
+    default: "NOTIFY-USER"
   },
   lane_id: "sessionId",
   parameters: {

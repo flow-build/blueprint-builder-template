@@ -10,7 +10,7 @@ module.exports = [
       input: {},
       request: {
         verb: "GET",
-        url: { $mustache: "http://{{bag.postgrest.url}}/carts?id=eq.{{bag.cartId}}" },
+        url: { $mustache: "http://{{environment.POSTGREST_URL}}/carts?id=eq.{{bag.cart.id}}" },
         headers: {
           ContentType: "application/json",
           Accept: "application/vnd.pgrst.object+json"
@@ -27,7 +27,7 @@ module.exports = [
     next: "END",
     type: "SystemTask",
     category: "setToBag",
-    lane_id: "free",
+    lane_id: "sessionId",
     parameters: {
       input: {
         cart: { $ref: "result.data" },

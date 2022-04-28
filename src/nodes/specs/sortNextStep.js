@@ -1,6 +1,6 @@
 module.exports = {
-  id: "PENDING-PAYMENT-PICK-FIRST",
-  name: "PENDING PAYMENT PICK FIRST",
+  id: "SHIPMENT-NEXT-STEP",
+  name: "SHIPMENT NEXT STEP",
   next: "END",
   type: "SystemTask",
   category: "setToBag",

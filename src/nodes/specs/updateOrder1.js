@@ -1,36 +1,38 @@
 module.exports = [
   {
-    id: "GET-ORDER",
-    name: "GET ORDER",
-    next: "ORDER-BAG",
+    id: "UPDATE-ORDER",
+    name: "UPDATE ORDER",
+    next: "ORDER-UPDATE-BAG-1",
     type: "SystemTask",
     category: "HTTP",
     lane_id: "sessionId",
     parameters: {
-      input: {},
+      input: {
+        status_code: "SUCCESS"
+      },
       request: {
-        verb: "GET",
-        url: { $mustache: "http://{{environment.POSTGREST_URL}}/orders?id=eq.{{bag.order.id}}" },
+        verb: "PATCH",
+        url: { $mustache: 'http://{{environment.POSTGREST_URL}}/orders?id=eq.{{bag.orderId}}' },
         headers: {
           ContentType: "application/json",
-          Accept: "application/vnd.pgrst.object+json"
+          Prefer: "return=representation"
         },
       },
       valid_response_codes: [200, 201, 202],
       timeout: 600,
-      max_content_length: 10000,
+      max_content_length: 5000,
     },
   },
   {
-    id: "ORDER-BAG",
-    name: "ORDER BAG",
+    id: "ORDER-UPDATE-BAG-1",
+    name: "ORDER UPDATE BAG",
     next: "END",
     type: "SystemTask",
     category: "setToBag",
     lane_id: "sessionId",
     parameters: {
       input: {
-        order: { $ref: "result.data" }
+        paymentOptions: { $ref: "result.data" },
       },
     },
   },

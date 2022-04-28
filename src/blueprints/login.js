@@ -71,6 +71,9 @@ module.exports = {
     prepare: [],
     nodes: getNodes(nodes),
     lanes: getLanes(getNodes(nodes)),
-    environment: {},
+    environment: {
+      RPC_URL: "RPC_URL",
+      POSTGREST_URL: "POSTGREST_URL"
+    },
   },
 };

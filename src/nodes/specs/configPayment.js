@@ -16,7 +16,8 @@ module.exports = {
       actor: {
         actorId: { $ref: "actor_data.actor_id" },
         sessionId: { $ref: "actor_data.session_id" }
-      }
+      },
+      eventType: "payment executed"
     },
   },
 };

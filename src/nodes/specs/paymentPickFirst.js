@@ -8,7 +8,19 @@ module.exports = {
   parameters: {
     input: {
       currentPayment: {
-        $js: "({bag}) => bag.payment.find(item => item.status_code === 'SUCCESS')"
+        id: {
+          $js: "({bag}) => bag.paymentSelection[0]"
+        },
+        type: {
+          $js: `({bag}) => {
+            const id = bag.paymentSelection[0];
+            const options = bag.paymentOptions;
+            return options.find(item => item.id === id).alias
+          }`
+        }
+      },
+      remainingPayments: {
+        $js: "({bag}) => bag.paymentSelection.slice(1)"
       }
     },
   },

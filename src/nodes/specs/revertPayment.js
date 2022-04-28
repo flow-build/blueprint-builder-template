@@ -12,7 +12,7 @@ module.exports = [
       },
       request: {
         verb: "PATCH",
-        url: { $mustache: 'http://{{bag.postgrest.url}}/payments?id=eq.{{bag.currentPayment.id}}' },
+        url: { $mustache: 'http://{{environment.POSTGREST_URL}}/payments?id=eq.{{bag.currentPayment.id}}' },
         headers: {
           ContentType: "application/json",
           Prefer: "return=representation"

@@ -2,24 +2,22 @@ module.exports = [
   {
     id: "CREATE-ORDER",
     name: "CREATE ORDER",
-    next: "ORDER-BAG",
+    next: "CREATE-ORDER-BAG",
     type: "SystemTask",
     category: "HTTP",
     lane_id: "sessionId",
     parameters: {
       input: {
-        user_id: { $ref: "bag.actor.actorId" },
-        cart_id: { $ref: "bag.cart.id" }
+        cart_id: { $ref: "bag.cart.id" },
       },
       request: {
-        verb: "PATCH",
-        url: { $mustache: 'http://{{bag.postgrest.url}}/orders' },
+        verb: "POST",
+        url: { $mustache: "http://{{environment.RPC_URL}}/rpc/order/create" },
         headers: {
           ContentType: "application/json",
-          Prefer: "return=representation"
         },
       },
-      valid_response_codes: [200, 201, 202],
+      valid_response_codes: [200, 201, 202, 422],
       timeout: 600,
       max_content_length: 5000,
     },
@@ -33,7 +31,7 @@ module.exports = [
     lane_id: "sessionId",
     parameters: {
       input: {
-        order: { $ref: "result.data" },
+        order: { $ref: "result.data.orders[0]" },
       },
     },
   },
