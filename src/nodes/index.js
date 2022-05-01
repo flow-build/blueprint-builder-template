@@ -12,11 +12,10 @@ const getNodes = (nodes) => {
       } else {
         //if nodeSpec is an array, bpNode should only change ids
         result = baseSpec.map((item, idx) => {
-          let node_id = item.id;
-          let next = item.next;
+          let node_id = `${bpNode.id}_${idx}` || item.id;
+          let next = `${bpNode.id}_${idx+1}` || item.next;
           let parameters = item.parameters;
           if (idx === 0 && bpNode.id) {
-            node_id = bpNode.id;
             parameters = _.merge(item.parameters, bpNode.parameters);
           }
           if (idx === baseSpec.length - 1) {
