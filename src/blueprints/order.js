@@ -34,19 +34,8 @@ const nodes = [
     id: 'CREATE-ORDER-RESPONSE',
     next: {
       422: 'NOTIFY-USER',
-      default: 'HAS-SELECTED-WALLET'
+      default: 'START-PAYMENT'
     }
-  }, {
-    nodeSpec: "hasSelectedWallet",
-    id: 'HAS-SELECTED-WALLET'
-  }, {
-    nodeSpec: "createPayment",
-    id: 'CREATE-PAYMENT',
-    next: 'START-PAYMENT'
-  }, {
-    nodeSpec: "createPaymentWallet",
-    id: 'CREATE-PAYMENT-WALLET',
-    next: 'START-PAYMENT'
   }, {
     nodeSpec: "startPaymentProcess",
     id: 'START-PAYMENT',
