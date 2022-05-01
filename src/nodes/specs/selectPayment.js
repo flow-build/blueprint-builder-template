@@ -17,16 +17,16 @@ module.exports = [
         type: "object",
         required: ["payments"],
         properties: {
-          useWallet: { type: "boolean" },
           payments: {
             type: "array",
             minItems: 1,
             items: [
               {
                 type: "object",
-                required: ["id"],
+                required: ["id","amount"],
                 properties: {
                   id: { type: "string", format: "uuid" },
+                  amount: { type: "number" }
                 },
               },
             ],
