@@ -32,6 +32,10 @@
           "input": {
             "actor_id": {
               "$ref": "actor_data.actor_id"
+            },
+            "test_bag": {
+                "first": "beer",
+                "second": "pizza"
             }
           }
         },

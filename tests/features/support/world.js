@@ -7,6 +7,8 @@ const actualTimeout = setTimeout;
 const mustache = require('mustache');
 const _ = require('lodash');
 const fs = require('fs');
+const assert = require("assert").strict;
+
 if (!fs.existsSync("tests/features/support/worldData.json")) {
   fs.writeFileSync("tests/features/support/worldData.json", "{}", (err) => {
     if (err) throw err;
@@ -162,6 +164,41 @@ class CustomWorld {
     logger.info(`O processo não possui a propriedade ${property}`);
     return;
   }
+
+  async checkBagValue(node, property, value) {
+    const nodeState = this.history.find(state => state.node_id === node);
+    this.bagValue = _.get(nodeState.bag, property);
+    if (value.includes('{{')) {
+      this.verifiedValue = _.get(worldData, value.replaceAll(/[{}]/g, ''));
+    } else {
+      this.verifiedValue = JSON.parse(value);
+    }
+    if (typeof this.bagValue != 'object') {
+      assert.equal(this.bagValue.toString(), this.verifiedValue.toString());
+      return true;
+    } else {
+      assert.equal(_.isEqual(_.sortBy(this.bagValue), _.sortBy(this.verifiedValue)), true);
+      return true;
+    }
+  }
+
+  async checkResultValue(node, property, value) {
+    const nodeState = this.history.find(state => state.node_id === node && state.status === "running");
+    this.resultValue = _.get(nodeState.result, property);
+    if (value.includes('{{')) {
+      this.verifiedValue = _.get(worldData, value.replaceAll(/[{}]/g, ''));
+    } else {
+      this.verifiedValue = JSON.parse(value);
+    }
+    if (typeof this.resultValue != 'object') {
+      assert.equal(this.resultValue.toString(), this.verifiedValue.toString());
+      return true;
+    } else {
+      assert.equal(_.isEqual(_.sortBy(this.resultValue), _.sortBy(this.verifiedValue)), true);
+      return true;
+    }
+  }
+
 }
 
 setWorldConstructor(CustomWorld);
