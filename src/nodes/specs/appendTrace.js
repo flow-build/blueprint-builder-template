@@ -31,6 +31,7 @@ module.exports = [
         inventory_id: { $ref: "bag.inventory.id" },
         item_id: { $ref: "bag.item.id" },
         event: { $ref: "bag.eventType" },
+        created_at: { $js: "() => new Date()"}
       },
       request: {
         verb: "POST",
