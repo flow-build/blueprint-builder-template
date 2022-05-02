@@ -16,6 +16,7 @@ const getNodes = (nodes) => {
           let next = `${bpNode.id}_${idx+1}` || item.next;
           let parameters = item.parameters;
           if (idx === 0 && bpNode.id) {
+            node_id = bpNode.id,
             parameters = _.merge(item.parameters, bpNode.parameters);
           }
           if (idx === baseSpec.length - 1) {
