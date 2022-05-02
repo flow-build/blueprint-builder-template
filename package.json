@@ -29,6 +29,7 @@
     "dotenv": "^16.0.0",
     "jsum": "^2.0.0-alpha.4",
     "lodash": "^4.17.21",
+    "mustache": "^4.2.0",
     "winston": "^3.6.0"
   },
   "devDependencies": {

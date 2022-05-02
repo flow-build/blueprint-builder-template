@@ -1,0 +1,181 @@
+{
+  "name": "testBlueprint",
+  "description": "execute tests",
+  "blueprint_spec": {
+    "requirements": [
+      "core"
+    ],
+    "prepare": [],
+    "nodes": [
+      {
+        "id": "START-TEST",
+        "name": "START",
+        "type": "Start",
+        "next": "CONFIG-TEST",
+        "lane_id": "free",
+        "parameters": {
+          "input_schema": {
+            "type": "object",
+            "additionalProperties": false
+          }
+        },
+        "nodeSpec": "startTest"
+      },
+      {
+        "id": "CONFIG-TEST",
+        "name": "CONFIG",
+        "next": "GENERATE-TOKEN-TEST",
+        "type": "SystemTask",
+        "category": "setToBag",
+        "lane_id": "free",
+        "parameters": {
+          "input": {
+            "actor_id": {
+              "$ref": "actor_data.actor_id"
+            },
+            "test_bag": {
+                "first": "beer",
+                "second": "pizza"
+            }
+          }
+        },
+        "nodeSpec": "configTest"
+      },
+      {
+        "id": "GENERATE-TOKEN-TEST",
+        "name": "Generate random token",
+        "next": "COUNT-TEST",
+        "type": "SystemTask",
+        "category": "setToBag",
+        "lane_id": "free",
+        "parameters": {
+          "input": {
+            "token": {
+              "$js": "() => `${Math.floor(1000 + Math.random() * 9000)}`"
+            }
+          }
+        },
+        "nodeSpec": "generateTokenTest"
+      },
+      {
+        "id": "COUNT-TEST",
+        "name": "Increase count",
+        "next": "CHECK-COUNT-TEST",
+        "type": "SystemTask",
+        "lane_id": "actorId",
+        "category": "setToBag",
+        "nodeSpec": "countTest",
+        "parameters": {
+            "input": {
+                "count": {
+                    "$js": "({bag}) => (bag?.count ? bag.count + 1 : 1)"
+                }
+            }
+        }
+      },
+      {
+        "id": "CHECK-COUNT-TEST",
+        "name": "Check if count is 3",
+        "next": {
+            "3": "CONFIRM-TOKEN-TEST",
+            "default": "COUNT-TEST"
+        },
+        "type": "Flow",
+        "lane_id": "actorId",
+        "nodeSpec": "checkCountTest",
+        "parameters": {
+            "input": {
+                "key": {
+                    "$ref": "bag.count"
+                }
+            }
+        }
+      },
+      {
+        "id": "CONFIRM-TOKEN-TEST",
+        "name": "Confirm generated token",
+        "next": "IS-TOKEN-VALID",
+        "type": "UserTask",
+        "lane_id": "actorId",
+        "parameters": {
+          "input": {},
+          "action": "CONFIRM_TOKEN",
+          "activity_manager": "commit",
+          "timeout": 30,
+          "activity_schema": {
+            "type": "object",
+            "properties": {
+              "token": {
+                "type": "string"
+              }
+            },
+            "required": [ "token" ],
+            "additionalProperties": false
+          }
+        },
+        "example": {
+          "file": "",
+          "schema": ""
+        },
+        "nodeSpec": "confirmTokenTest"
+      },
+      {
+        "id": "IS-TOKEN-VALID",
+        "name": "Check if token is valid",
+        "next": {
+            "true": "END-TEST-SUCCESS",
+            "default": "END-TEST-ERROR"
+        },
+        "type": "Flow",
+        "lane_id": "actorId",
+        "nodeSpec": "checkCountTest",
+        "parameters": {
+            "input": {
+                "key": {
+                    "$js": "({result, bag}) => (result.activities[0].data.token === bag.token)"
+                }
+            }
+        }
+      },
+      {
+        "id": "END-TEST-SUCCESS",
+        "name": "end",
+        "type": "Finish",
+        "next": null,
+        "lane_id": "actorId",
+        "parameters": {
+          "input": {}
+        },
+        "nodeSpec": "endTestSuccess"
+      },
+      {
+        "id": "END-TEST-ERROR",
+        "name": "end error",
+        "type": "Finish",
+        "next": null,
+        "lane_id": "actorId",
+        "parameters": {
+          "input": {}
+        },
+        "nodeSpec": "endTestError"
+      }
+    ],
+    "lanes": [
+      {
+        "id": "free",
+        "name": "always true",
+        "rule": {
+          "$js": "() => true"
+        }
+      },
+      {
+        "id": "actorId",
+        "name": "restricted",
+        "rule": {
+          "$js": "({ actor_data, bag }) => (actor_data.actor_id === bag.actor_id)"
+        }
+      }
+    ],
+    "environment": {}
+  }
+}
