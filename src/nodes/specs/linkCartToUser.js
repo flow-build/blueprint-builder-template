@@ -8,13 +8,13 @@ module.exports = [
     lane_id: "sessionId",
     parameters: {
       input: {
-        cart_id: {
-          $ref: 'bag.cart.id'
+        user_id: {
+          $ref: 'bag.userId'
         }
       },
       request: {
         verb: "PATCH",
-        url: { $mustache: 'http://{{environment.POSTGREST_URL}}/users?id=eq.{{bag.userId}}' },
+        url: { $mustache: 'http://{{environment.POSTGREST_URL}}/carts?id=eq.{{bag.cart.id}}' },
         headers: {
           ContentType: "application/json",
           Prefer: "return=representation"
