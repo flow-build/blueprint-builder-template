@@ -10,7 +10,7 @@ module.exports = [
       input: {},
       request: {
         verb: "GET",
-        url: { $mustache: 'http://{{environment.POSTGREST_URL}}/payments?order_id=eq.{{bag.order.id}}' },
+        url: { $mustache: "http://{{environment.POSTGREST_URL}}/payments?order_id=eq.{{bag.order.id}}" },
         headers: {
           ContentType: "application/json",
         },
@@ -30,6 +30,7 @@ module.exports = [
     parameters: {
       input: {
         payments: { $ref: "result.data" },
+        remainingPayments: { $ref: "result.data" },
       },
     },
   },
