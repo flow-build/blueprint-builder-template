@@ -28,6 +28,9 @@ module.exports = [
           actorId: { $ref: "actor_data.actor_id" },
           sessionId: { $ref: "actor_data.session_id" },
         },
+        user: {
+          id: { $ref: "actor_data.actor_id" },
+        },
         order: {
           id: { $ref: "bag.orderId"}
         }
