@@ -1,8 +1,8 @@
 module.exports = [
   {
-    id: "GET-PAYMENTS",
-    name: "GET PAYMENTS",
-    next: "PAYMENTS-BAG",
+    id: "GET-USER-BY-ID",
+    name: "Get User By ID",
+    next: "USER-BAG",
     type: "SystemTask",
     category: "HTTP",
     lane_id: "sessionId",
@@ -10,27 +10,27 @@ module.exports = [
       input: {},
       request: {
         verb: "GET",
-        url: { $mustache: "http://{{environment.POSTGREST_URL}}/payments?order_id=eq.{{bag.order.id}}" },
+        url: { $mustache: "http://{{environment.POSTGREST_URL}}/users?id=eq.{{bag.user.id}}" }, // See if it works based on AUTH response
         headers: {
           ContentType: "application/json",
+          Accept: "application/vnd.pgrst.object+json"
         },
       },
       valid_response_codes: [200, 201, 202],
       timeout: 600,
-      max_content_length: 5000,
+      max_content_length: 10000,
     },
   },
   {
-    id: "PAYMENTS-BAG",
-    name: "PAYMENTS BAG",
+    id: "USER-BAG",
+    name: "User Profile BAG",
     next: "END",
     type: "SystemTask",
     category: "setToBag",
     lane_id: "sessionId",
     parameters: {
       input: {
-        payments: { $ref: "result.data" },
-        remainingPayments: { $ref: "result.data" },
+        user: { $ref: "result.data" },
       },
     },
   },

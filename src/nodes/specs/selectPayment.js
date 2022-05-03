@@ -15,22 +15,26 @@ module.exports = [
       timeout: 1200,
       activity_schema: {
         type: "object",
-        required: ["payments"],
+        required: ["paymentOptions", "cart_id"],
         properties: {
-          useWallet: { type: "boolean" },
-          payments: {
+          paymentOptions: {
             type: "array",
             minItems: 1,
             items: [
               {
                 type: "object",
-                required: ["id"],
+                required: ["id","amount"],
                 properties: {
                   id: { type: "string", format: "uuid" },
+                  amount: { type: "number" }
                 },
               },
             ],
           },
+          cart_id: {
+            type: "string",
+            format: "uuid"
+          }
         },
       },
     },

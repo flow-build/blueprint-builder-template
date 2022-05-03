@@ -9,7 +9,7 @@ module.exports = {
   lane_id: "sessionId",
   parameters: {
     input: {
-      decision: { $js: "({result}) => result.data.status_code === 'REFUSED'" }
+      decision: { $js: "({bag}) => !bag.transaction.retry" }
     }
   }
 }

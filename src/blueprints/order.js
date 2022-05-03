@@ -16,6 +16,10 @@ const nodes = [
   }, {
     nodeSpec: "getCart",
     id: "GET-CART",
+    next: "LINK-CART-TO-USER"
+  }, {
+    nodeSpec: "linkCartToUser",
+    id: "LINK-CART-TO-USER",
     next: "GET-PAYMENT-OPTIONS"
   }, {
     nodeSpec: "getPaymentOptions",
@@ -34,36 +38,47 @@ const nodes = [
     id: 'CREATE-ORDER-RESPONSE',
     next: {
       422: 'NOTIFY-USER',
-      default: 'HAS-SELECTED-WALLET'
+      default: 'APPEND-TRACE-ORDER'
     }
   }, {
-    nodeSpec: "hasSelectedWallet",
-    id: 'HAS-SELECTED-WALLET'
-  }, {
-    nodeSpec: "createPayment",
-    id: 'CREATE-PAYMENT',
-    next: 'START-PAYMENT'
-  }, {
-    nodeSpec: "createPaymentWallet",
-    id: 'CREATE-PAYMENT-WALLET',
-    next: 'START-PAYMENT'
+    nodeSpec: "appendTrace",
+    id: "APPEND-TRACE-ORDER",
+    name: "APPEND-TRACE-ORDER",
+    next: "START-PAYMENT",
+    parameters: {
+      input: {
+        event: "Order Created"
+      }
+    }
   }, {
     nodeSpec: "startPaymentProcess",
     id: 'START-PAYMENT',
-    next: 'END'
+    next: 'APPEND-TRACE-PAYMENT'
   }, {
-    nodeSpec: "end"
+    nodeSpec: "appendTrace",
+    id: "APPEND-TRACE-PAYMENT",
+    name: "APPEND-TRACE-PAYMENT",
+    next: "END-ORDER-SUCCESS",
+    parameters: {
+      input: {
+        event: "Order sent to payment"
+      }
+    }
+  }, {
+    nodeSpec: "end",
+    id: 'END-ORDER-SUCCESS'
   }, {
     nodeSpec: "notifyUser",
     id: 'NOTIFY-USER',
-    next: 'END-ERROR',
+    next: 'END-ORDER-ERROR',
     parameters: {
       input: {
         message: "Já existe um order para este cart"
       }
     }
   }, {
-    nodeSpec: "endError"
+    nodeSpec: "endError",
+    id: "END-ORDER-ERROR"
   }
 ];
 

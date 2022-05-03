@@ -7,9 +7,10 @@ module.exports = {
   parameters: {
     input_schema: {
       type: "object",
-      required: ["cartId"],
+      required: ["cartId", "userId"],
       properties: {
-        cartId: { type: "string", format: "uuid" }
+        cartId: { type: "string", format: "uuid" },
+        userId: { type: "string", format: "uuid"}
       }
     },
     timeout: 86400

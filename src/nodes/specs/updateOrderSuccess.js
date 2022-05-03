@@ -1,18 +1,22 @@
 module.exports = [
   {
-    id: "GET-PAYMENTS",
-    name: "GET PAYMENTS",
-    next: "PAYMENTS-BAG",
+    id: "UPDATE-ORDER-SUCESS",
+    name: "UPDATE ORDER",
+    next: "ORDER-UPDATE-BAG",
     type: "SystemTask",
     category: "HTTP",
     lane_id: "sessionId",
     parameters: {
-      input: {},
+      input: {
+        status_code: "SUCCESS"
+      },
       request: {
-        verb: "GET",
-        url: { $mustache: "http://{{environment.POSTGREST_URL}}/payments?order_id=eq.{{bag.order.id}}" },
+        verb: "PATCH",
+        url: { $mustache: 'http://{{environment.POSTGREST_URL}}/orders?id=eq.{{bag.orderId}}' },
         headers: {
           ContentType: "application/json",
+          Prefer: "return=representation",
+          Accept: "application/vnd.pgrst.object+json"
         },
       },
       valid_response_codes: [200, 201, 202],
@@ -21,16 +25,15 @@ module.exports = [
     },
   },
   {
-    id: "PAYMENTS-BAG",
-    name: "PAYMENTS BAG",
+    id: "ORDER-UPDATE-BAG",
+    name: "ORDER UPDATE BAG",
     next: "END",
     type: "SystemTask",
     category: "setToBag",
     lane_id: "sessionId",
     parameters: {
       input: {
-        payments: { $ref: "result.data" },
-        remainingPayments: { $ref: "result.data" },
+        order: { $ref: "result.data" },
       },
     },
   },

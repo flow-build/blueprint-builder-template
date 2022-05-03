@@ -8,10 +8,10 @@ module.exports = {
   parameters: {
     input: {
       remainingPayments: {
-        $js: '({bag}) => bag.payments.slice(1)'
+        $js: '({bag}) => bag.remainingPayments.slice(1)'
       },
       currentPayment: {
-        $ref: 'bag.payments[0]'
+        $ref: 'bag.remainingPayments[0]'
       }
     },
   },

@@ -9,7 +9,7 @@ module.exports = {
   lane_id: "sessionId",
   parameters: {
     input: {
-      decision: { $js: "({bag}) => bag.payment.filter(item => item.status_code === 'SUCCESS').length > 0" }
+      decision: { $js: "({bag}) => bag.payments.filter(item => item.status_code === 'SUCCESS').length > 0" }
     }
   }
 }

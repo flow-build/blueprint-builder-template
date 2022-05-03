@@ -12,15 +12,7 @@ const lanes = [
   {
     id: "actorId",
     name: "restricted",
-    rule: [
-      "fn",
-      ["actor_data", "bag"],
-      [
-        "=",
-        ["get", ["get", "bag", ["`", "is_authorized"]], ["`", "actor_id"]],
-        ["get", "actor_data", ["`", "actor_id"]],
-      ],
-    ],
+    rule: { $js: "({ actor_data, bag }) => (actor_data.actor_id === bag.actor_id)"},
   },
   {
     id: "sessionId",

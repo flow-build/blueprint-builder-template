@@ -1,21 +1,24 @@
 module.exports = [
   {
-    id: "UPDATE-ORDER",
-    name: "UPDATE ORDER",
-    next: "ORDER-UPDATE-BAG",
+    id: "LINK-CART-TO-USER",
+    name: "LINK CART TO USER",
+    next: "LINK-CART-TO-USER-BAG",
     type: "SystemTask",
     category: "HTTP",
     lane_id: "sessionId",
     parameters: {
       input: {
-        status_code: "SUCCESS"
+        user_id: {
+          $ref: 'bag.userId'
+        }
       },
       request: {
         verb: "PATCH",
-        url: { $mustache: 'http://{{environment.POSTGREST_URL}}/orders?id=eq.{{bag.orderId}}' },
+        url: { $mustache: 'http://{{environment.POSTGREST_URL}}/carts?id=eq.{{bag.cart.id}}' },
         headers: {
           ContentType: "application/json",
-          Prefer: "return=representation"
+          Prefer: "return=representation",
+          Accept: "application/vnd.pgrst.object+json"
         },
       },
       valid_response_codes: [200, 201, 202],
@@ -24,15 +27,15 @@ module.exports = [
     },
   },
   {
-    id: "ORDER-UPDATE-BAG",
-    name: "ORDER UPDATE BAG",
+    id: "LINK-CART-TO-USER-BAG",
+    name: "LINK CART TO USER BAG",
     next: "END",
     type: "SystemTask",
     category: "setToBag",
     lane_id: "sessionId",
     parameters: {
       input: {
-        paymentOptions: { $ref: "result.data" },
+        linkedCart: { $ref: "result.data" },
       },
     },
   },
