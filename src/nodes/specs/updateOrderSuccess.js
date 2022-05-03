@@ -1,6 +1,6 @@
 module.exports = [
   {
-    id: "UPDATE-ORDER",
+    id: "UPDATE-ORDER-SUCESS",
     name: "UPDATE ORDER",
     next: "ORDER-UPDATE-BAG",
     type: "SystemTask",
@@ -15,7 +15,8 @@ module.exports = [
         url: { $mustache: 'http://{{environment.POSTGREST_URL}}/orders?id=eq.{{bag.orderId}}' },
         headers: {
           ContentType: "application/json",
-          Prefer: "return=representation"
+          Prefer: "return=representation",
+          Accept: "application/vnd.pgrst.object+json"
         },
       },
       valid_response_codes: [200, 201, 202],
@@ -32,7 +33,7 @@ module.exports = [
     lane_id: "sessionId",
     parameters: {
       input: {
-        paymentOptions: { $ref: "result.data" },
+        order: { $ref: "result.data" },
       },
     },
   },
