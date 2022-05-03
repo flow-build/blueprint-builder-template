@@ -20,7 +20,7 @@ module.exports = [
           }`,
         },
         email: { $ref: "bag.user.email" },
-        phone: { $ref: "bag.user.password" },
+        phone: { $ref: "bag.user.phone" },
         name: { $ref: "bag.user.name" },
         external_id: { $ref: "result.data.user.id"}
       },

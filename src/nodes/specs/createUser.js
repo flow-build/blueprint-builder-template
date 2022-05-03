@@ -16,7 +16,7 @@ module.exports = [
         url: { $mustache: "https://{{environment.SUPERTOKENS_BASE_URL}}/recipe/signup" },
         headers: {
           ContentType: "application/json",
-          "api-key": "p1A65kcqn1h=vqBL2pLBBxD2K51x1Z"
+          "api-key": { $ref: "bag.supertokens.apiKey" }
         },
       },
       valid_response_codes: [200, 201, 202, 400, 422],

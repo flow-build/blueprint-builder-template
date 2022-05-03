@@ -62,7 +62,8 @@ module.exports = {
     environment: {
       RPC_URL: "RPC_URL",
       POSTGREST_URL: "POSTGREST_URL",
-      SUPERTOKENS_BASE_URL: "SUPERTOKENS_BASE_URL"
+      SUPERTOKENS_BASE_URL: "SUPERTOKENS_BASE_URL",
+      SUPERTOKENS_API_KEY: "SUPERTOKENS_API_KEY"
     },
   },
 };
