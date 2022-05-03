@@ -11,7 +11,6 @@ const getNodes = (nodes) => {
         return _.merge(result, baseSpec, bpNode);
       } else {
         //if nodeSpec is an array, bpNode should only change ids
-        console.log(baseSpec)
         result = baseSpec.map((item, idx) => {
           let node_id = `${bpNode.id}_${idx}` || item.id;
           let next = `${bpNode.id}_${idx+1}` || item.next;

@@ -10,11 +10,7 @@ module.exports = [
       input: {},
       request: {
         verb: "GET",
-<<<<<<< Updated upstream
         url: { $mustache: "http://{{environment.POSTGREST_URL}}/users?id=eq.{{bag.user.id}}" }, // See if it works based on AUTH response
-=======
-        url: { $mustache: "http://{{bag.postgrest}}/users?id=eq.{{result.user.id}}" }, // See if it works based on AUTH response
->>>>>>> Stashed changes
         headers: {
           ContentType: "application/json",
           Accept: "application/vnd.pgrst.object+json"
