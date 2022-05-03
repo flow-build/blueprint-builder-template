@@ -11,7 +11,7 @@ module.exports = {
         $js: '({bag}) => bag.remainingPayments.slice(1)'
       },
       currentPayment: {
-        $ref: 'bag.payments[0]'
+        $ref: 'bag.remainingPayments[0]'
       }
     },
   },
