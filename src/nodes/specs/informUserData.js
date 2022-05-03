@@ -8,7 +8,6 @@ module.exports = {
     input: {},
     action: "INFORM_USER_DATA",
     activity_manager: "commit",
-    timeout: 600,
     activity_schema: {
       type: 'object',
       required: ['phone', 'email', 'name', 'password'],

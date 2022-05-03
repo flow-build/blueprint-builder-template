@@ -16,8 +16,12 @@ const nodes = [
   }, {
     nodeSpec: "informUserData",
     id: "INFORM-USER-DATA",
-    next: "GET-PROFILE",
+    next: "BAG-USER",
   }, {
+    nodeSpec: "setUserToBag",
+    id: "BAG-USER",
+    next: "GET-PROFILE",
+  },{
     nodeSpec: "getProfile",
     id: "GET-PROFILE",
     next: "HAS-PROFILE",
@@ -57,7 +61,8 @@ module.exports = {
     lanes: getLanes(getNodes(nodes)),
     environment: {
       RPC_URL: "RPC_URL",
-      POSTGREST_URL: "POSTGREST_URL"
+      POSTGREST_URL: "POSTGREST_URL",
+      SUPERTOKENS_BASE_URL: "SUPERTOKENS_BASE_URL"
     },
   },
 };
