@@ -10,7 +10,7 @@ module.exports = [
       input: {},
       request: {
         verb: "GET",
-        url: { $mustache: "http://{{environment.POSTGREST_URL}}/users?id=eq.{{result.user.id}}" }, // See if it works based on AUTH response
+        url: { $mustache: "http://{{environment.POSTGREST_URL}}/users?id=eq.{{bag.user.id}}" }, // See if it works based on AUTH response
         headers: {
           ContentType: "application/json",
           Accept: "application/vnd.pgrst.object+json"
