@@ -8,7 +8,7 @@ module.exports = {
   parameters: {
     input: {
       supertokens: {
-        url: process.env.SUPERTOKENS_URL,
+        url: process.env.SUPERTOKENS_BASE_URL,
         apiKey: process.env.SUPERTOKENS_API_KEY
       },
       postgrest: {

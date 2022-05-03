@@ -1,0 +1,379 @@
+{
+	"info": {
+		"_postman_id": "71c1987c-5583-4718-9ed9-5b3ff46f2e86",
+		"name": "FAST-DEMO_createUser",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "success",
+			"item": [
+				{
+					"name": "Create createUser process",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable('process_id', jsonData.process_id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/workflows/name/:workflow_name/create",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"workflows",
+								"name",
+								":workflow_name",
+								"create"
+							],
+							"variable": [
+								{
+									"key": "workflow_name",
+									"value": "createUser"
+								}
+							]
+						},
+						"description": "Esse endpoint permite criar um processo de um determinado workflow, usando o workflow_name. \r\n\r\nO endpoint localiza a versão mais recente para o workflow informado e avalia se o token enviado permite acesso a um nó inicial deste workflow.\r\n\r\nAo final dessa chamada o processo estará no estado *unstarted*.\r\n\r\nA avaliação de parâmetros iniciais do processo (inputSchema) não é feita nessa chamada."
+					},
+					"response": []
+				},
+				{
+					"name": "Executar processo",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/processes/:process_id/run",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"processes",
+								":process_id",
+								"run"
+							],
+							"variable": [
+								{
+									"key": "process_id",
+									"value": "{{process_id}}"
+								}
+							]
+						},
+						"description": "Esse endpoint permite executar um processo já instanciado. Para execução é necessário informar o process_id.\r\n\r\nEm caso de processos recém-criados, o endpoint inicia um processo *unstarted*. É neste endpoint que será avaliado os parâmetros iniciais do processo (inputSchema), se enviados/necessários."
+					},
+					"response": []
+				},
+				{
+					"name": "get INFORM_USER",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const response = pm.response.json();\r",
+									"pm.expect(response.props.action).to.eql(\"INFORM_USER_DATA\");\r",
+									"pm.environment.set(\"activity_manager_id\",response.id);\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/processes/:process_id/activity",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"processes",
+								":process_id",
+								"activity"
+							],
+							"variable": [
+								{
+									"key": "process_id",
+									"value": "{{process_id}}"
+								}
+							]
+						},
+						"description": "Esse endpoint permite listar as atividades disponíveis para um determinado processo.\r\n\r\nSerão retornadas as atividades acessíveis para o token informando, retornando 404 caso não haja nenhuma atividade que cumpra os requisitos."
+					},
+					"response": []
+				},
+				{
+					"name": "Submit INFORM_USER",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"phone\": \"5521981797241\",\n    \"email\": \"marcelo.zhu@fdte.io\",\n    \"name\": \"marcelo\",\n    \"password\": \"senha123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/activity_manager/:activity_manager_id/submit",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"activity_manager",
+								":activity_manager_id",
+								"submit"
+							],
+							"variable": [
+								{
+									"key": "activity_manager_id",
+									"value": "{{activity_manager_id}}"
+								}
+							]
+						},
+						"description": "Esse endpoint consolida as chamadas de _Commit_ e _Push_ de uma atividade.\r\n\r\nEste endpoint utiliza o id do ActivityManager, sendo recomendado para fechar atividades de notify."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "get token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);\r",
+							"postman.setEnvironmentVariable('token', jsonData.jwtToken);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"claims\": [\"anyone\"] \r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/token",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Criar Workflow",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "content",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"createUser\",\n  \"description\": \"execute createUser\",\n  \"blueprint_spec\": {\n    \"requirements\": [\n      \"core\"\n    ],\n    \"prepare\": [],\n    \"nodes\": [\n      {\n        \"id\": \"START\",\n        \"name\": \"START CREATE USER\",\n        \"type\": \"Start\",\n        \"next\": \"CONFIG\",\n        \"lane_id\": \"free\",\n        \"parameters\": {\n          \"input_schema\": {}\n        },\n        \"nodeSpec\": \"startCreateUser\"\n      },\n      {\n        \"id\": \"CONFIG\",\n        \"name\": \"CONFIG\",\n        \"next\": \"INFORM-USER-DATA\",\n        \"type\": \"SystemTask\",\n        \"category\": \"setToBag\",\n        \"lane_id\": \"free\",\n        \"parameters\": {\n          \"input\": {\n            \"supertokens\": {\n              \"url\": \"373919d1245211ecb4c243d4910fadef-us-east-1.aws.supertokens.io:3568\"\n            },\n            \"postgrest\": {\n              \"url\": \"44.203.2.237:3000\"\n            },\n            \"twilio\": {\n              \"phone\": \"+5511968548891\"\n            },\n            \"actor\": {\n              \"actorId\": {\n                \"$ref\": \"actor_data.actor_id\"\n              },\n              \"sessionId\": {\n                \"$ref\": \"actor_data.session_id\"\n              }\n            }\n          }\n        },\n        \"nodeSpec\": \"config\"\n      },\n      {\n        \"id\": \"INFORM-USER-DATA\",\n        \"name\": \"INFORM USER DATA\",\n        \"next\": \"BAG-USER\",\n        \"type\": \"UserTask\",\n        \"lane_id\": \"sessionId\",\n        \"parameters\": {\n          \"input\": {},\n          \"action\": \"INFORM_USER_DATA\",\n          \"activity_manager\": \"commit\",\n          \"activity_schema\": {\n            \"type\": \"object\",\n            \"required\": [\n              \"phone\",\n              \"email\",\n              \"name\",\n              \"password\"\n            ],\n            \"properties\": {\n              \"phone\": {\n                \"type\": \"string\"\n              },\n              \"email\": {\n                \"type\": \"string\",\n                \"format\": \"email\"\n              },\n              \"name\": {\n                \"type\": \"string\"\n              },\n              \"password\": {\n                \"type\": \"string\"\n              }\n            }\n          }\n        },\n        \"example\": {\n          \"file\": \"\",\n          \"schema\": \"\"\n        },\n        \"nodeSpec\": \"informUserData\"\n      },\n      {\n        \"id\": \"BAG-USER\",\n        \"name\": \"SET USER TO BAG\",\n        \"next\": \"GET-PROFILE\",\n        \"type\": \"SystemTask\",\n        \"category\": \"setToBag\",\n        \"lane_id\": \"free\",\n        \"parameters\": {\n          \"input\": {\n            \"user\": {\n              \"$ref\": \"result.activities.0.data\"\n            }\n          }\n        },\n        \"nodeSpec\": \"setUserToBag\"\n      },\n      {\n        \"id\": \"GET-PROFILE\",\n        \"name\": \"GET PROFILE\",\n        \"next\": \"HAS-PROFILE\",\n        \"lane_id\": \"sessionId\",\n        \"type\": \"SystemTask\",\n        \"category\": \"HTTP\",\n        \"parameters\": {\n          \"input\": {},\n          \"request\": {\n            \"verb\": \"GET\",\n            \"url\": {\n              \"$mustache\": \"http://{{environment.POSTGREST_URL}}/users?external_id=eq.0e09d67a-b541-4301-acb2-ebb13d0039da\"\n            },\n            \"headers\": {\n              \"ContentType\": \"application/json\"\n            }\n          },\n          \"valid_response_codes\": [\n            200,\n            201,\n            202\n          ],\n          \"timeout\": 600,\n          \"max_content_length\": 10000\n        }\n      },\n      {\n        \"id\": \"HAS-PROFILE\",\n        \"name\": \"HAS PROFILE\",\n        \"type\": \"Flow\",\n        \"next\": {\n          \"true\": \"NOTIFY-ALREADY-EXISTS\",\n          \"default\": \"CREATE-USER\"\n        },\n        \"lane_id\": \"sessionId\",\n        \"parameters\": {\n          \"input\": {\n            \"decision\": {\n              \"$js\": \"({result}) => result.data\"\n            }\n          }\n        },\n        \"nodeSpec\": \"hasProfile\"\n      },\n      {\n        \"id\": \"CREATE-USER\",\n        \"name\": \"CREATE USER\",\n        \"next\": \"CREATE-PROFILE\",\n        \"lane_id\": \"sessionId\",\n        \"type\": \"SystemTask\",\n        \"category\": \"HTTP\",\n        \"parameters\": {\n          \"input\": {\n            \"email\": {\n              \"$ref\": \"bag.user.email\"\n            },\n            \"password\": {\n              \"$ref\": \"bag.user.password\"\n            }\n          },\n          \"request\": {\n            \"verb\": \"POST\",\n            \"url\": {\n              \"$mustache\": \"https://{{environment.SUPERTOKENS_BASE_URL}}/recipe/signup\"\n            },\n            \"headers\": {\n              \"ContentType\": \"application/json\"\n            }\n          },\n          \"valid_response_codes\": [\n            200,\n            201,\n            202,\n            400,\n            422\n          ],\n          \"timeout\": 600,\n          \"max_content_length\": 5000\n        }\n      },\n      {\n        \"id\": \"CREATE-PROFILE\",\n        \"name\": \"CREATE PROFILE\",\n        \"next\": \"NOTIFY-SUCCESS\",\n        \"lane_id\": \"sessionId\",\n        \"type\": \"SystemTask\",\n        \"category\": \"HTTP\",\n        \"parameters\": {\n          \"input\": {\n            \"email\": {\n              \"$ref\": \"bag.email\"\n            },\n            \"phone\": {\n              \"$ref\": \"password\"\n            },\n            \"name\": {\n              \"$ref\": \"name\"\n            }\n          },\n          \"request\": {\n            \"verb\": \"POST\",\n            \"url\": {\n              \"$mustache\": \"http://{{environment.POSTGREST_URL}}/user?id=eq.{{result.external_id}}\"\n            },\n            \"headers\": {\n              \"ContentType\": \"application/json\",\n              \"Accept\": \"application/vnd.pgrst.object+json\"\n            }\n          },\n          \"valid_response_codes\": [\n            200,\n            201,\n            202\n          ],\n          \"timeout\": 600,\n          \"max_content_length\": 10000\n        }\n      },\n      {\n        \"id\": \"NOTIFY-SUCCESS\",\n        \"name\": \"NOTIFY USER\",\n        \"next\": \"END\",\n        \"type\": \"UserTask\",\n        \"lane_id\": \"sessionId\",\n        \"parameters\": {\n          \"input\": {},\n          \"action\": \"NOTIFY_USER\",\n          \"activity_manager\": \"commit\",\n          \"timeout\": 600,\n          \"activity_schema\": {\n            \"type\": \"object\"\n          }\n        },\n        \"example\": {\n          \"file\": \"\",\n          \"schema\": \"\"\n        },\n        \"nodeSpec\": \"notifyUser\"\n      },\n      {\n        \"id\": \"NOTIFY-ALREADY-EXISTS\",\n        \"name\": \"NOTIFY USER\",\n        \"next\": \"END-ERROR\",\n        \"type\": \"UserTask\",\n        \"lane_id\": \"sessionId\",\n        \"parameters\": {\n          \"input\": {},\n          \"action\": \"NOTIFY_USER\",\n          \"activity_manager\": \"commit\",\n          \"timeout\": 600,\n          \"activity_schema\": {\n            \"type\": \"object\"\n          }\n        },\n        \"example\": {\n          \"file\": \"\",\n          \"schema\": \"\"\n        },\n        \"nodeSpec\": \"notifyUser\"\n      },\n      {\n        \"id\": \"END\",\n        \"name\": \"end\",\n        \"type\": \"Finish\",\n        \"next\": null,\n        \"lane_id\": \"sessionId\",\n        \"parameters\": {\n          \"input\": {}\n        },\n        \"nodeSpec\": \"end\"\n      },\n      {\n        \"id\": \"END-ERROR\",\n        \"name\": \"end-error\",\n        \"type\": \"Finish\",\n        \"next\": null,\n        \"lane_id\": \"sessionId\",\n        \"parameters\": {\n          \"input\": {}\n        },\n        \"nodeSpec\": \"endError\"\n      }\n    ],\n    \"lanes\": [\n      {\n        \"id\": \"free\",\n        \"name\": \"always true\",\n        \"rule\": {\n          \"$js\": \"() => true\"\n        }\n      },\n      {\n        \"id\": \"sessionId\",\n        \"name\": \"restricted to sessionId\",\n        \"rule\": {\n          \"$js\": \"({ actor_data, bag }) => (actor_data.session_id === bag.actor.sessionId ? true : false)\"\n        }\n      }\n    ],\n    \"environment\": {\n      \"RPC_URL\": \"RPC_URL\",\n      \"POSTGREST_URL\": \"POSTGREST_URL\",\n      \"SUPERTOKENS_BASE_URL\": \"SUPERTOKENS_BASE_URL\"\n    }\n  }\n}"
+				},
+				"url": {
+					"raw": "{{host}}/workflows",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"workflows"
+					]
+				},
+				"description": "Esse endpoint permite criar ou atualizar um workflow no FlowBuild.\r\n\r\nA definição para criação ou atualização de um workflow é o campo *name*.\r\nO campo *name* é case-sensitive.\r\n\r\nNo evento de atualização de um workflow, é criado uma nova versão para o mesmo *name*."
+			},
+			"response": []
+		},
+		{
+			"name": "history",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/processes/:process_id/history",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"processes",
+						":process_id",
+						"history"
+					],
+					"variable": [
+						{
+							"key": "process_id",
+							"value": "{{process_id}}"
+						}
+					]
+				},
+				"description": "Esse endpoint permite listar o histórico dos estados gerados por um determinado processo."
+			},
+			"response": []
+		},
+		{
+			"name": "New Request",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Prefer",
+						"value": "return=representation",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \"name\": \"zhu\", \"email\": \"marcelozhu@fdte.io\" }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://44.203.2.237:3000/users",
+					"protocol": "http",
+					"host": [
+						"44",
+						"203",
+						"2",
+						"237"
+					],
+					"port": "3000",
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
