@@ -1,36 +1,34 @@
-module.exports = {
+module.exports = [{
   id: "EXECUTE-PAYMENT",
   name: "EXECUTE PAYMENT",
-  next: "END",
+  next: "EXECUTE-PAYMENT-BAG",
   type: "SystemTask",
   category: "HTTP",
   lane_id: "sessionId",
   parameters: {
-    input: {
-      status_code: {
-        $js: `({ bag }) => {
-          const random = Math.floor(Math.random() * 10) + 1;
-          let status_code = "SUCCESS";
-          if (random > 8) {
-            status_code = "PROCESSING_FAILED";
-          } else if (random > 7) {
-            status_code = "REFUSED";
-          }
-          return status_code;
-        }`,
-      }
-    },
+    input: {},
     request: {
-      verb: "PATCH",
-      url: { $mustache: "http://{{environment.POSTGREST_URL}}/payments?id=eq.{{bag.currentPayment.id}}" },
+      verb: "POST",
+      url: { $mustache: "http://{{environment.RPC_URL}}/rpc/payment/{{bag.currentPayment.id}}" },
       headers: {
-        ContentType: "application/json",
-        Prefer: "return=representation",
-        Accept: "application/vnd.pgrst.object+json"
+        ContentType: "application/json"
       },
     },
-    valid_response_codes: [200, 201, 202],
+    valid_response_codes: [200, 404, 422],
     timeout: 600,
     max_content_length: 5000,
   },
-};
+}, {
+  id: "EXECUTE-PAYMENT-BAG",
+  name: "BAG PAYMENT RESPONSE",
+  next: "END",
+  type: "SystemTask",
+  category: "setToBag",
+  lane_id: "free",
+  parameters: {
+    input: {
+      transaction: { $ref: "result.data" },
+      eventType: { $ref: "result.data.message" }
+    },
+  },
+}];
