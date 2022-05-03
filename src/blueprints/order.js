@@ -16,6 +16,10 @@ const nodes = [
   }, {
     nodeSpec: "getCart",
     id: "GET-CART",
+    next: "LINK-CART-TO-USER"
+  }, {
+    nodeSpec: "linkCartToUser",
+    id: "LINK-CART-TO-USER",
     next: "GET-PAYMENT-OPTIONS"
   }, {
     nodeSpec: "getPaymentOptions",
