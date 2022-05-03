@@ -9,6 +9,7 @@ module.exports = [
     parameters: {
       input: {
         cart_id: { $ref: "bag.cart.id" },
+        paymentOptions: { $ref: "bag.paymentSelection" }
       },
       request: {
         verb: "POST",
