@@ -15,7 +15,7 @@ module.exports = [
       timeout: 1200,
       activity_schema: {
         type: "object",
-        required: ["paymentOptions", "cart_id"],
+        required: ["paymentOptions"],
         properties: {
           paymentOptions: {
             type: "array",
@@ -52,8 +52,7 @@ module.exports = [
     lane_id: "sessionId",
     parameters: {
       input: {
-        paymentSelection: { $ref: "result.activities[0].data.payments" },
-        useWallet: { $ref: "result.activities[0].data.useWallet" },
+        paymentSelection: { $ref: "result.activities[0].data.paymentOptions" },
       },
     },
   },
