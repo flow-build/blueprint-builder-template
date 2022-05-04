@@ -4,7 +4,6 @@ const { logger } = require("../../../src/utils/logger");
 const { setWorldConstructor } = require("@cucumber/cucumber");
 const FLOWBUILD_URL = process.env.FLOWBUILD_URL;
 const actualTimeout = setTimeout;
-const mustache = require('mustache');
 const _ = require('lodash');
 const fs = require('fs');
 const assert = require("assert").strict;
@@ -31,7 +30,7 @@ class CustomWorld {
     logger.info("getToken");
     const response = await axios({
       method: "post",
-      url: "/login",
+      url: "/token",
       baseURL: FLOWBUILD_URL,
       data: {
         email: this.email,
@@ -39,6 +38,20 @@ class CustomWorld {
       },
     });
     logger.info("getToken received");
+    this.token = response.data.jwtToken;
+  }
+
+  async auth(actor_id) {
+    logger.info("auth");
+    const response = await axios({
+      method: "post",
+      url: "/token",
+      baseURL: FLOWBUILD_URL,
+      data: {
+        actor_id: actor_id
+      },
+    });
+    logger.info("auth token received");
     this.token = response.data.jwtToken;
   }
 
@@ -71,10 +84,9 @@ class CustomWorld {
   async submitActivity(payload) {
     logger.info(`submitActivity ${this.amid}`);
     if(payload.includes('{{')) {
-      await this.getProcessHistory();
-      const middlePayload = JSON.parse(mustache.render(payload, worldData));
-      const payloadPairs = Object.entries(middlePayload).map(subArr => subArr.map(value => value.toString()));
-      this.resultPayload = Object.fromEntries(payloadPairs);
+      const middlePayloadArr = payload.match(/\{{(.+?)\}}/g).map(value => value.replaceAll(/[{}]/g, ''));
+      const middlePairs = middlePayloadArr.map(value => [value, _.get(worldData, value)]);
+      this.resultPayload = Object.fromEntries(middlePairs);
     } else {
       this.resultPayload = JSON.parse(payload);
     }
@@ -92,12 +104,17 @@ class CustomWorld {
     return false;
   }
 
-  async waitProcessStop() {
+  async waitProcessStop(timeout = 1000) {
     logger.info(`waitProcessStop ${this.pid}`);
     const expectedStatus = ["waiting", "error", "finished"];
     do {
-      await wait(1000);
-      await this.getCurrentState();
+      if (timeout === 1000) {
+        await wait(timeout);
+        await this.getCurrentState();
+      } else {
+        await this.getCurrentState();
+        await wait(timeout*1200);
+      }
       logger.debug(`process status: ${this.currentStatus}`);
     } while (!expectedStatus.includes(this.currentStatus));
     return;
@@ -121,7 +138,7 @@ class CustomWorld {
     logger.info(`getCurrentState ${this.pid}`);
     const response = await axios({
       method: "get",
-      url: `/processes/${this.pid}`,
+      url: `/processes/${this.pid}/state`,
       baseURL: FLOWBUILD_URL,
       headers: { Authorization: `Bearer ${this.token}` },
     });
