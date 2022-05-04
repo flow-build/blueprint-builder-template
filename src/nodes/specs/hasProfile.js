@@ -9,7 +9,7 @@ module.exports = {
   lane_id: "sessionId",
   parameters: {
     input: {
-      decision: { $js: "({result}) => result.data" }
+      decision: { $js: "({result}) => result.data.length > 0" }
     }
   }
 }

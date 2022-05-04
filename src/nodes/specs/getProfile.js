@@ -10,7 +10,7 @@ module.exports = [
       input: {},
       request: {
         verb: "GET",
-        url: { $mustache: "http://{{environment.POSTGREST_URL}}/users?email=eq.{{result.activities[0].data.email}}" },
+        url: { $mustache: "http://{{environment.POSTGREST_URL}}/users?email=eq.{{bag.user.email}}" },
         headers: {
           ContentType: "application/json"
         },
