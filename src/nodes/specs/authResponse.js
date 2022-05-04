@@ -3,7 +3,7 @@ module.exports = {
   name: "AUTH RESPONSE",
   type: "Flow",
   next: {
-    OK: "GET-USER-BY-ID", // Trocar para "GET-USER-BY-ID" quando o serviço estiver pronto
+    OK: "GET-USER-BY-EXTERNAL-ID",
     default: "NOTIFY-USER"
   },
   lane_id: "sessionId",
