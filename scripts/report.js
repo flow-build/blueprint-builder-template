@@ -9,6 +9,7 @@ const table = new Table({
   columns: [
     { name: "Blueprint", alignment: "left", maxLen: 12 },
     { name: "Tested Scenarios", alignment: "left", maxLen: 12 },
+    { name: "Passed Scenarios", alignment: "left", maxLen: 12 },
     { name: "Nodes Covered", alignment: "left", maxLen: 12 },
     { name: "Connections Covered", alignment: "left", maxLen: 12 },
   ],
@@ -37,7 +38,8 @@ fs.readdir(reportsDir, async (error, files) => {
         {
           "Blueprint": report.blueprint.name,
           "Tested Scenarios": report.processes.processesEvaluated,
-          "Nodes Covered": report.coverage.nodes ,
+          "Passed Scenarios": report.processes.testsResult?.filter(test => test === 'PASSED').length,
+          "Nodes Covered": report.coverage.nodes,
           "Connections Covered": report.coverage.connections,
         },
         {
