@@ -25,7 +25,11 @@ fs.readdir(reportsDir, async (error, files) => {
       const scriptName = path.basename(`../${reportsDir}/${file}`, ".json");
       const report = require(`../${reportsDir}/${scriptName}`);
       if (Number.parseFloat(report.coverage.nodes.split(" ")[0]) < 100 || Number.parseFloat(report.coverage.connections.split(" ")[0]) < 100) {
-        this.color = "yellow"
+        if(Number.parseFloat(report.coverage.nodes.split(" ")[0]) < 100 && Number.parseFloat(report.coverage.connections.split(" ")[0]) < 100) {
+          this.color = "red"
+        } else {
+          this.color = "yellow"
+        }
       } else {
         this.color = "green"
       }
