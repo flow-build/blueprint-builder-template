@@ -14,7 +14,7 @@ module.exports = [
       },
       request: {
         verb: "PATCH",
-        url: { $mustache: 'http://{{environment.POSTGREST_URL}}/carts?id=eq.{{bag.cart.id}}' },
+        url: { $mustache: 'http://{{environment.POSTGREST_URL}}/carts?id=eq.{{bag.cart[0].id}}' },
         headers: {
           ContentType: "application/json",
           Prefer: "return=representation",
