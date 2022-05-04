@@ -8,9 +8,10 @@ module.exports = [
     parameters: {
       input_schema: {
         type: "object",
-        required: ["orderId"],
+        required: ["orderId", "userId"],
         properties: {
           orderId: { type: "string", format: "uuid" },
+          userId: { type: 'string', format: 'uuid' }
         },
       },
     },
@@ -29,7 +30,7 @@ module.exports = [
           sessionId: { $ref: "actor_data.session_id" },
         },
         user: {
-          id: { $ref: "actor_data.actor_id" },
+          id: { $ref: "bag.userId" },
         },
         order: {
           id: { $ref: "bag.orderId"}
