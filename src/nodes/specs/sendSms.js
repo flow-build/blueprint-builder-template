@@ -7,7 +7,7 @@ module.exports = {
   lane_id: "sessionId",
   parameters: {
     input: {
-      To: { $ref: "bag.twilio.phone" },
+      To: { $ref: "bag.user.phone" },
       MessagingServiceSid: "MG0f3da17b79a8e112d94dbc581ae27e97",
       Body: { $ref: "bag.token" },
     },

@@ -25,11 +25,11 @@ const nodes = [
     nodeSpec: 'authResponse',
     id: 'AUTH-RESPONSE'
   },
-  /* {
-    nodeSpec: 'getUserByID',
-    id: 'GET-USER-BY-ID',
+  {
+    nodeSpec: 'getUserByExternalID',
+    id: 'GET-USER-BY-EXTERNAL-ID',
     next: 'GENERATE-TOKEN'
-  }, */ {
+  }, {
     nodeSpec: 'generateToken',
     id: 'GENERATE-TOKEN',
     next: 'SEND-SMS'

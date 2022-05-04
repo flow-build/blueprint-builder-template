@@ -12,8 +12,8 @@ const getNodes = (nodes) => {
       } else {
         //if nodeSpec is an array, bpNode should only change ids
         result = baseSpec.map((item, idx) => {
-          let node_id = `${bpNode.id}_${idx}` || item.id;
-          let next = `${bpNode.id}_${idx+1}` || item.next;
+          let node_id = item.id || `${bpNode.id}_${idx}`
+          let next = item.next || `${bpNode.id}_${idx+1}`
           let parameters = item.parameters;
           if (idx === 0 && bpNode.id) {
             node_id = bpNode.id,

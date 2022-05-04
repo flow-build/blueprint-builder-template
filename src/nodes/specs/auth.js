@@ -31,7 +31,7 @@ module.exports = [
   {
     id: "AUTH-BAG",
     name: "AUTH-BAG",
-    next: "END",
+    next: "GET-USER-BY-ID",
     type: "SystemTask",
     category: "setToBag",
     lane_id: "sessionId",

@@ -1,7 +1,7 @@
 module.exports = [
   {
-    id: "GET-USER-BY-ID",
-    name: "Get User By ID",
+    id: "GET-USER-BY-EXTERNAL-ID",
+    name: "Get User By External ID",
     next: "USER-BAG",
     type: "SystemTask",
     category: "HTTP",
@@ -10,10 +10,10 @@ module.exports = [
       input: {},
       request: {
         verb: "GET",
-        url: { $mustache: "http://{{environment.POSTGREST_URL}}/users?id=eq.{{bag.user.id}}" }, // See if it works based on AUTH response
+        url: { $mustache: "http://{{bag.postgrest.url}}/users?external_id=eq.{{bag.user.id}}" }, // See if it works based on AUTH response
         headers: {
           ContentType: "application/json",
-          Accept: "application/vnd.pgrst.object+json"
+          /* Accept: "application/vnd.pgrst.object+json" */
         },
       },
       valid_response_codes: [200, 201, 202],
@@ -30,7 +30,7 @@ module.exports = [
     lane_id: "sessionId",
     parameters: {
       input: {
-        user: { $ref: "result.data" },
+        user: { $ref: "result.data[0]" },
       },
     },
   },
