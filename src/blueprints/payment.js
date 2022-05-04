@@ -11,7 +11,7 @@ const nodes = [
     next: "GET-USER-BY-ID",
   },
   {
-    nodeSpec: "getUserById",
+    nodeSpec: "getUserByExternalId",
     id: "GET-USER-BY-ID",
     next: "GET-ORDER",
   },
