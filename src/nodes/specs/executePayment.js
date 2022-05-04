@@ -14,7 +14,7 @@ module.exports = [{
         ContentType: "application/json"
       },
     },
-    valid_response_codes: [200, 404, 422],
+    valid_response_codes: [200, 404],
     timeout: 600,
     max_content_length: 5000,
   },

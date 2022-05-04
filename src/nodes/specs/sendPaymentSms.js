@@ -9,7 +9,7 @@ module.exports = {
     input: {
       To: { $ref: "bag.user.phone" },
       MessagingServiceSid: "MG0f3da17b79a8e112d94dbc581ae27e97",
-      Body: "Pagamento confirmado",
+      Body: { $ref: "bag.message" },
     },
     request: {
       verb: "POST",

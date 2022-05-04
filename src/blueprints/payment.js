@@ -11,7 +11,7 @@ const nodes = [
     next: "GET-USER-BY-ID",
   },
   {
-    nodeSpec: "getUserByExternalId",
+    nodeSpec: "getUserById",
     id: "GET-USER-BY-ID",
     next: "GET-ORDER",
   },
@@ -59,12 +59,17 @@ const nodes = [
   {
     nodeSpec: "updateOrderSuccess",
     id: "UPDATE-ORDER-SUCCESS",
-    next: "SEND-SMS",
+    next: "SEND-SMS-SUCCESS",
   },
   {
     nodeSpec: "sendPaymentSms",
-    id: "SEND-SMS",
+    id: "SEND-SMS-SUCCESS",
     next: "START-FULFILLMENT",
+    parameters: {
+      input: {
+        Body: "Seu pagamento foi realizado com sucesso",
+      }
+    }
   },
   {
     nodeSpec: "startFulfillmentProcess",
@@ -79,13 +84,33 @@ const nodes = [
     id: "IS-ERROR-FINAL",
     next: {
       true: "TRACE-ERROR",
-      default: "WAIT",
+      default: "SEND-SMS-TEMP-ERROR",
     },
   },
   {
     nodeSpec: "appendTrace",
     id: "TRACE-ERROR",
-    next: "HAS-SUCCESSFUL-PAYMENT",
+    next: "SEND-SMS-FINAL-ERROR",
+  },
+  {
+    nodeSpec: "sendPaymentSms",
+    id: "SEND-SMS-TEMP-ERROR",
+    next: "WAIT",
+    parameters: {
+      input: {
+        Body: "Ops, tivemos um problema com seu pagamento, mas não se preocupe, tentaremos novamente.",
+      }
+    }
+  },
+  {
+    nodeSpec: "sendPaymentSms",
+    id: "SEND-SMS-FINAL-ERROR",
+    next: "END-ERROR",
+    parameters: {
+      input: {
+        Body: "Ops, tivemos um problema com seu pagamento, favor cadastrar outra forma de pagamento.",
+      }
+    }
   },
   {
     nodeSpec: "wait",
