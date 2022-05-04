@@ -1,0 +1,25 @@
+{
+  "blueprint": {
+    "name": "createUser",
+    "id": "be2cfd80-cbc8-11ec-8538-9795c99f55c7"
+  },
+  "processes": {
+    "processesEvaluated": 2,
+    "processIds": [
+      "ce3e9b70-cbc8-11ec-8538-9795c99f55c7",
+      "c76add90-cbc8-11ec-8538-9795c99f55c7"
+    ],
+    "testsResult": [
+      "PASSED",
+      "PASSED"
+    ]
+  },
+  "coverage": {
+    "nodes": "100.0 %",
+    "connections": "100.0 %"
+  },
+  "analysis": {
+    "uncoveredNodes": [],
+    "uncoveredConnections": []
+  }
+}

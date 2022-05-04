@@ -1,0 +1,34 @@
+{
+  "blueprint": {
+    "name": "login",
+    "id": "51867b50-cbc0-11ec-8538-9795c99f55c7"
+  },
+  "processes": {
+    "processesEvaluated": 2,
+    "processIds": [
+      "5e98fe81-cbca-11ec-8538-9795c99f55c7",
+      "4d02bc60-cbca-11ec-8538-9795c99f55c7"
+    ],
+    "testsResult": [
+      "PASSED",
+      "FAILED"
+    ]
+  },
+  "coverage": {
+    "nodes": "82.35 %",
+    "connections": "76.47 %"
+  },
+  "analysis": {
+    "uncoveredNodes": [
+      "CREATE-JWT",
+      "DELIVER-JWT",
+      "END"
+    ],
+    "uncoveredConnections": [
+      "AUTH-RESPONSE -> NOTIFY-USER",
+      "IS-TOKEN-VALID -> CREATE-JWT",
+      "CREATE-JWT -> DELIVER-JWT",
+      "DELIVER-JWT -> END"
+    ]
+  }
+}
