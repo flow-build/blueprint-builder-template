@@ -25,20 +25,22 @@ fs.readdir(reportsDir, async (error, files) => {
     if (path.extname(`../${reportsDir}/${file}`) === ".json") {
       const scriptName = path.basename(`../${reportsDir}/${file}`, ".json");
       const report = require(`../${reportsDir}/${scriptName}`);
-      if (Number.parseFloat(report.coverage.nodes.split(" ")[0]) < 100 || Number.parseFloat(report.coverage.connections.split(" ")[0]) < 100) {
-        if(Number.parseFloat(report.coverage.nodes.split(" ")[0]) < 100 && Number.parseFloat(report.coverage.connections.split(" ")[0]) < 100) {
-          this.color = "red"
-        } else {
-          this.color = "yellow"
-        }
+      const passedScenarios = report.processes.testsResult?.filter(test => test === 'PASSED').length;
+      const testedScenarios = report.processes.processesEvaluated;
+      const nodesCovered = report.coverage.nodes.split(" ")[0];
+      const connectionsCovered = report.coverage.connections.split(" ")[0];
+      if(passedScenarios < testedScenarios) {
+        this.color = "red"
+      } else if (nodesCovered < 100 || connectionsCovered < 100) {
+        this.color = "yellow"
       } else {
         this.color = "green"
       }
       table.addRow(
         {
           "Blueprint": report.blueprint.name,
-          "Tested Scenarios": report.processes.processesEvaluated,
-          "Passed Scenarios": report.processes.testsResult?.filter(test => test === 'PASSED').length,
+          "Tested Scenarios": testedScenarios,
+          "Passed Scenarios": passedScenarios,
           "Nodes Covered": report.coverage.nodes,
           "Connections Covered": report.coverage.connections,
         },
