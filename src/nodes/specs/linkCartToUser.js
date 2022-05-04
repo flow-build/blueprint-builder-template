@@ -14,14 +14,14 @@ module.exports = [
       },
       request: {
         verb: "PATCH",
-        url: { $mustache: 'http://{{environment.POSTGREST_URL}}/carts?id=eq.{{bag.cart[0].id}}' },
+        url: { $mustache: 'http://{{environment.POSTGREST_URL}}/carts?id=eq.{{bag.cart.0.id}}' },
         headers: {
           ContentType: "application/json",
           Prefer: "return=representation",
           Accept: "application/vnd.pgrst.object+json"
         },
       },
-      valid_response_codes: [200, 201, 202],
+      valid_response_codes: [200, 201, 202, 204],
       timeout: 600,
       max_content_length: 5000,
     },
