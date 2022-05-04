@@ -3,12 +3,15 @@ const { BlueprintCoverage } = require("../../../src/utils/coverageCalculator");
 const coverage = new BlueprintCoverage();
 let count = 0;
 let workflowName;
-After( function (result) {
-  workflowName = result.gherkinDocument.feature.name;
+let testsResult = [];
+
+After( function (data) {
+  workflowName = data.gherkinDocument.feature.name;
+  testsResult.push(data.result);
   count += 1;
 });
 
 AfterAll( async function () {
-  await coverage.analyze(workflowName, count);
+  await coverage.analyze(workflowName, count, testsResult);
   return;
 });

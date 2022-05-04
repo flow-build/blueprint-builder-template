@@ -10,7 +10,7 @@ class BlueprintCoverage {
     this.coverage = new Coverage(db);
   }
 
-  async analyze(workflowName, count) {
+  async analyze(workflowName, count, testsResult) {
 
     const workflow = await db('workflow')
       .where('name', workflowName)
@@ -18,6 +18,7 @@ class BlueprintCoverage {
       .first();
 
     const result = await this.coverage.calculateCoverage(workflow.id, count);
+    result.processes.testsResult = testsResult.map(obj => obj.status).reverse();
     const now = new Date();
     const reportFileName = (workflowName + now.getFullYear() + (now.getMonth() + 1) + now.getDate() + now.getHours() + now.getMinutes() + now.getSeconds());
     
