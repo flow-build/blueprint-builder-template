@@ -10,6 +10,7 @@ module.exports = {
     actor_data: { $ref: "actor_data" },
     input: {
       orderId: { $ref: "bag.order.id" },
+      userId: { $ref: "bag.userId" }
     },
   },
 };

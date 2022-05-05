@@ -7,7 +7,8 @@ const nodes = [
     nodeSpec: "startFulfillment",
     id: "START",
     next: "GET-ORDER",
-  }, {
+  },
+  {
     nodeSpec: "getOrder",
     id: "GET-ORDER",
     next: "CREATE-SHIPMENT",
@@ -15,20 +16,23 @@ const nodes = [
   {
     nodeSpec: "createShipment",
     id: "CREATE-SHIPMENT",
-    next: "SHIPMENT-STATUS"
+    next: "SHIPMENT-STATUS",
   },
   {
     nodeSpec: "checkShipmentStatus",
-    id: "SHIPMENT-STATUS"
-  }, {
+    id: "SHIPMENT-STATUS",
+  },
+  {
     nodeSpec: "updateShipment",
     id: "UPDATE-SHIPMENT-TRANSIT",
     next: "SORT-NEXT-STEP",
-  }, {
+  },
+  {
     nodeSpec: "sortNextStep",
     id: "SORT-NEXT-STEP",
     next: "WAIT",
-  }, {
+  },
+  {
     nodeSpec: "wait",
     id: "WAIT",
     next: "SHIPMENT-STATUS",
@@ -44,29 +48,30 @@ const nodes = [
     next: "END",
     parameters: {
       input: {
-        status_code: "DELIVERED"
-      }
+        status_code: "DELIVERED",
+      },
     },
   },
   {
     nodeSpec: "updateShipment",
     id: "UPDATE-SHIPMENT-RETURNED",
     next: "UPDATE-ORDER-RETURNED",
-    status_code: "RETURNED"
+    status_code: "RETURNED",
   },
   {
     nodeSpec: "updateOrderError",
     id: "UPDATE-ORDER-RETURNED",
     next: "END-ERROR",
     input: {
-      status_code: "RETURNED"
-    }
+      status_code: "RETURNED",
+    },
   },
-   {
-    nodeSpec: "end"
-  }, {
-    nodeSpec: "endError"
-  }
+  {
+    nodeSpec: "end",
+  },
+  {
+    nodeSpec: "endError",
+  },
 ];
 module.exports = {
   name: name,
@@ -78,7 +83,7 @@ module.exports = {
     lanes: getLanes(getNodes(nodes)),
     environment: {
       RPC_URL: "RPC_URL",
-      POSTGREST_URL: "POSTGREST_URL"
+      POSTGREST_URL: "POSTGREST_URL",
     },
   },
 };

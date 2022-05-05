@@ -14,13 +14,13 @@ module.exports = [
       request: {
         verb: "POST",
         url: {
-          $mustache: "https://{{bag.supertokens.url}}/recipe/signin",
+          $mustache: "https://{{environment.SUPERTOKENS_BASE_URL}}/recipe/signin",
         },
         headers: {
           ContentType: "application/json",
           rid: "emailpassword",
           "cdi-version": "2.9",
-          "api-key": { $ref: "bag.supertokens.apiKey" },
+          "api-key": { $ref: "environment.SUPERTOKENS_API_KEY" },
         },
       },
       valid_response_codes: [200, 201, 202],

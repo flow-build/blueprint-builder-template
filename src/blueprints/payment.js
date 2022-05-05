@@ -67,7 +67,7 @@ const nodes = [
     next: "START-FULFILLMENT",
     parameters: {
       input: {
-        Body: "Seu pagamento foi realizado com sucesso",
+        Body: { $js: "({bag}) => 'O pagamento do seu pedido ' + bag.order.id.substring(30) + ' foi realizado com sucesso.'" },
       }
     }
   },

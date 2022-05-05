@@ -9,7 +9,9 @@ module.exports = {
     workflow_name: "fulfillment",
     actor_data: { $ref: "actor_data" },
     input: {
-      invoiceId: { $ref: "bag.order.invoice_id" }
-    }
-  }
-}
+      order: {
+        id: { $ref: "bag.order.id" },
+      },
+    },
+  },
+};
