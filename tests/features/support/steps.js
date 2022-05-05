@@ -22,6 +22,16 @@ Given("que um usuario anonimo esta logado", { timeout: 60 * 1000 }, async functi
   return;
 });
 
+Given("the user {string} is logged in", { timeout: 60 * 1000 }, async function (actor_id) {
+  await this.auth(actor_id);
+  return;
+});
+
+Given("que o usuario {string} esta logado", { timeout: 60 * 1000 }, async function (actor_id) {
+  await this.auth(actor_id);
+  return;
+});
+
 Given(
   "a {string} process started with the initial data of {string}",
   { timeout: 60 * 1000 },
@@ -172,11 +182,13 @@ Then("salvo a variável {string} com o valor de {string}", { timeout: 60 * 1000 
 
 
 When("the user submits {string}", { timeout: 60 * 1000 }, async function (payload) {
+  await this.getProcessHistory();
   await this.submitActivity(payload);
   return;
 });
 
 When("o usuário submete {string}", { timeout: 60 * 1000 }, async function (payload) {
+  await this.getProcessHistory();
   await this.submitActivity(payload);
   return;
 });
@@ -192,6 +204,20 @@ Then("the process waits at {string}", { timeout: 60 * 1000 }, async function (no
 Then("o processo para no nó {string}", { timeout: 60 * 1000 }, async function (node) {
   await this.waitProcessStop();
   await this.getCurrentActivity();
+  assert.equal(this.currentStatus, "waiting");
+  assert.equal(this.nodeId, node);
+  return;
+});
+
+Then("the process waits at {string} for {int} seconds", { timeout: 60 * 1000 }, async function (node, timeout) {
+  await this.waitProcessStop(timeout);
+  assert.equal(this.currentStatus, "waiting");
+  assert.equal(this.nodeId, node);
+  return;
+});
+
+Then("o processo para no nó {string} por {int} segundos", { timeout: 60 * 1000 }, async function (node, timeout) {
+  await this.waitProcessStop(timeout);
   assert.equal(this.currentStatus, "waiting");
   assert.equal(this.nodeId, node);
   return;
