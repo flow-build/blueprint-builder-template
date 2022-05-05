@@ -5,15 +5,29 @@ module.exports = [{
   next: "CONFIG",
   lane_id: "free",
   parameters: {
-    input_schema: {
+    input_schema:
+    {
       type: "object",
-      required: ["invoiceId"],
+      required: [
+        "order"
+      ],
       properties: {
-        invoiceId: { type: "string", format: "uuid" },
-      },
-    },
-  },
-}, {
+        order: {
+          required: [
+            "id"
+          ],
+          properties: {
+            id: {
+              type: "string",
+              format: "uuid"
+            }
+          }
+        }
+      }
+    }
+  }
+},
+{
   id: "CONFIG",
   name: "CONFIG FULFILLMENT",
   next: "END",
@@ -24,9 +38,6 @@ module.exports = [{
     input: {
       postgrest: {
         url: '44.203.2.237:3000',
-      },
-      invoice: {
-        id: { $ref: "bag.invoiceId" }
       },
       actor: {
         actorId: { $ref: "actor_data.actor_id" },

@@ -8,24 +8,7 @@ module.exports = {
   parameters: {
     input: {
       nextStatusCode: {
-        $js: `({bag}) => { 
-          const current = bag.shipment.status_code;
-          if(current === 'READY-FOR-PICKUP') { return 'TRANSIT' }
-          const random = Math.floor(Math.random() * 10) + 1;
-          if(current === 'TRANSIT') {
-            if(random > 3) {
-              return 'DELIVERED'
-            } else {
-              return 'DELIVERY-FAILED'
-            }
-          } else {
-            if(random > 3) {
-              return 'TRANSIT'
-            } else {
-              return 'RETURNED'
-            }
-          }
-        }`
+        $js: `({bag}) => {function getNextStep(){var randon = Math.floor(Math.random() * 100);if(randon == 0){return ('RETURNED');}else if(randon < 40){return 'DELIVERED';}else if(randon < 101){return 'TRANSIT';}}; return getNextStep();}`
       }
     },
   },
