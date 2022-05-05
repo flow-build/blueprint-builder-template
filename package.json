@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "plop": "plop",
+    "report": "node ./scripts/report.js",
     "export": "node ./scripts/export.js",
     "test": "node ./node_modules/.bin/cucumber-js"
   },
@@ -26,15 +27,18 @@
     "@cucumber/cucumber": "^7.3.2",
     "ajv-schema-generator": "^0.0.1",
     "axios": "^0.26.1",
+    "console-table-printer": "^2.11.0",
     "dotenv": "^16.0.0",
     "jsum": "^2.0.0-alpha.4",
     "lodash": "^4.17.21",
     "mustache": "^4.2.0",
+    "pg": "^8.7.3",
     "winston": "^3.6.0"
   },
   "devDependencies": {
     "eslint": "^8.10.0",
     "jest": "^27.5.1",
+    "knex": "^2.0.0",
     "plop": "^3.0.5"
   }
 }
