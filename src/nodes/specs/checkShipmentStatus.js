@@ -3,14 +3,15 @@ module.exports = {
   name: "CHECK SHIPMENT STATUS",
   type: "Flow",
   next: {
-    DELIVERED: "END",
-    RETURNED: "END-ERROR",
-    default: "UPDATE-SHIPMENT"
+    DELIVERED: "UPDATE-SHIPMENT-DELIVERED",
+    RETURNED: "UPDATE-SHIPMENT-RETURNED",
+    TRANSIT:  "UPDATE-SHIPMENT-TRANSIT",
+    default: "UPDATE-SHIPMENT-TRANSIT"
   },
   lane_id: "sessionId",
   parameters: {
     input: {
-      decision: { $ref: "bag.shipment.status_code" }
+      decision: { $ref: "bag.shipment[0].status_code" }
     }
   }
 }

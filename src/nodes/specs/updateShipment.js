@@ -2,7 +2,7 @@ module.exports = [
   {
     id: "UPDATE-SHIPMENT",
     name: "UPDATE SHIPMENT",
-    next: "SHIPMENT-UPDATE-BAG",
+    next: "GET-SHIPMENT",
     type: "SystemTask",
     category: "HTTP",
     lane_id: "sessionId",
@@ -12,13 +12,35 @@ module.exports = [
       },
       request: {
         verb: "PATCH",
-        url: { $mustache: 'http://{{bag.postgrest.url}}/shipments?id=eq.{{bag.shipment.id}}' },
+        url: { $mustache: 'http://{{bag.postgrest.url}}/shipments?id=eq.{{bag.shipment.0.id}}' },
+        headers: {
+          ContentType: "application/json"
+        },
+      },
+      valid_response_codes: [200, 201, 202, 204],
+      timeout: 600,
+      max_content_length: 5000,
+    },
+  },
+  {
+    id: "GET-SHIPMENT",
+    name: "GET SHIPMENT",
+    next: "SHIPMENT-UPDATE-BAG",
+    type: "SystemTask",
+    category: "HTTP",
+    lane_id: "sessionId",
+    parameters: {
+      input: {
+      },
+      request: {
+        verb: "GET",
+        url: { $mustache: 'http://{{bag.postgrest.url}}/shipments?id=eq.{{bag.shipment.0.id}}' },
         headers: {
           ContentType: "application/json",
           Prefer: "return=representation"
         },
       },
-      valid_response_codes: [200, 201, 202],
+      valid_response_codes: [200, 201, 202, 204],
       timeout: 600,
       max_content_length: 5000,
     },

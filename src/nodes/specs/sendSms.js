@@ -8,15 +8,14 @@ module.exports = {
   parameters: {
     input: {
       To: { $ref: "bag.user.phone" },
-      MessagingServiceSid: "MG0f3da17b79a8e112d94dbc581ae27e97",
-      Body: { $ref: "bag.token" },
+      MessagingServiceSid: "MG0f3da17b79a8e112d94dbc581ae27e97"
     },
     request: {
       verb: "POST",
-      url: { $mustache: "https://api.twilio.com/2010-04-01/Accounts/{{bag.twilio.accountId}}/Messages.json" },
+      url: { $mustache: "https://api.twilio.com/2010-04-01/Accounts/{{environment.TWILIO_ACCOUNT_ID}}/Messages.json" },
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
-        Authorization: { $mustache: "Basic {{{bag.twilio.authToken}}}" },
+        Authorization: { $mustache: "Basic {{{environment.TWILIO_AUTH_TOKEN}}}" },
       },
     },
     valid_response_codes: [200, 201, 202],

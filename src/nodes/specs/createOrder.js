@@ -8,7 +8,7 @@ module.exports = [
     lane_id: "sessionId",
     parameters: {
       input: {
-        cart_id: { $ref: "bag.cart[0].id" },
+        cart_id: { $ref: "bag.cart.id" },
         paymentOptions: { $ref: "bag.paymentSelection" }
       },
       request: {

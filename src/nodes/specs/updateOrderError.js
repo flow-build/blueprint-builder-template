@@ -12,7 +12,7 @@ module.exports = [
       },
       request: {
         verb: "PATCH",
-        url: { $mustache: 'http://{{environment.POSTGREST_URL}}/orders?id=eq.{{bag.orderId}}' },
+        url: { $mustache: 'http://{{environment.POSTGREST_URL}}/orders?id=eq.{{bag.order.id}}' },
         headers: {
           ContentType: "application/json",
           Prefer: "return=representation"

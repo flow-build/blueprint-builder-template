@@ -14,7 +14,7 @@ module.exports = [{
         ContentType: "application/json"
       },
     },
-    valid_response_codes: [200, 404, 422],
+    valid_response_codes: [200, 404],
     timeout: 600,
     max_content_length: 5000,
   },
@@ -24,7 +24,7 @@ module.exports = [{
   next: "END",
   type: "SystemTask",
   category: "setToBag",
-  lane_id: "free",
+  lane_id: "sessionId",
   parameters: {
     input: {
       transaction: { $ref: "result.data" },

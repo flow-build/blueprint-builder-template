@@ -7,14 +7,11 @@ module.exports = {
   lane_id: "free",
   parameters: {
     input: {
-      postgrest: {
-        url: process.env.POSTGREST_URL,
-      },
-      grok: {
-        url: process.env.GROK_URL
-      },
       cart: {
         id: { $ref: "bag.cartId" }
+      },
+      user: {
+        id: { $ref: "bag.userId" }
       },
       actor: {
         actorId: { $ref: "actor_data.actor_id" },

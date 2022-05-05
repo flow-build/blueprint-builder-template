@@ -6,7 +6,8 @@ module.exports = {
   lane_id: "sessionId",
   parameters: {
     input: {
-      token: { $ref: 'result.data.jwtToken' }
+      token: { $ref: 'result.data.jwtToken' },
+      userId: { $ref: 'bag.user.id' }
     },
     action: "DELIVER_JWT",
     activity_manager: "commit",

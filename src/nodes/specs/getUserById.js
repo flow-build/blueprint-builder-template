@@ -10,10 +10,10 @@ module.exports = [
       input: {},
       request: {
         verb: "GET",
-        url: { $mustache: "http://{{environment.POSTGREST_URL}}/users?external_id=eq.{{bag.user.id}}" }, // See if it works based on AUTH response
+        url: { $mustache: "http://{{environment.POSTGREST_URL}}/users?id=eq.{{bag.user.id}}" },
         headers: {
           ContentType: "application/json",
-          /* Accept: "application/vnd.pgrst.object+json" */
+          Accept: "application/vnd.pgrst.object+json"
         },
       },
       valid_response_codes: [200, 201, 202],
@@ -30,7 +30,7 @@ module.exports = [
     lane_id: "sessionId",
     parameters: {
       input: {
-        user: { $ref: "result.data[0]" },
+        user: { $ref: "result.data" },
       },
     },
   },

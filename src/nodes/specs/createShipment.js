@@ -19,7 +19,8 @@ module.exports = [
             return uuid;
           }`,
         },
-        opcode: "CARRIER",
+        op_code: "CARRIER",
+        price: 20,
         status_code: "WAITING"
       },
       request: {
